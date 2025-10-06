@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="User.UserFXMLController">
+   <children>
+      <Label layoutX="38.0" layoutY="25.0" text="User Registration" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <VBox layoutX="14.0" layoutY="55.0" prefHeight="192.0" prefWidth="322.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+         <children>
+            <TextField fx:id="txtUserName" promptText="User Name" styleClass="form-control" />
+            <TextField fx:id="txtUserFullName" layoutX="10.0" layoutY="10.0" promptText="User Full Name" styleClass="form-control" />
+            <PasswordField fx:id="txtUserPassword" promptText="User Password" styleClass="form-control" />
+            <JFXComboBox fx:id="txtUserRole" prefHeight="25.0" prefWidth="330.0" promptText="User Role" styleClass="action-btn" />
+            <TextField fx:id="txtUserEmail" promptText="User Email" styleClass="form-control" />
+         </children>
+      </VBox>
+      <HBox layoutX="14.0" layoutY="276.0" prefHeight="40.0" prefWidth="322.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+         <children>
+            <JFXButton fx:id="btnSaveUser" buttonType="RAISED" onAction="#saveUser" prefHeight="30.0" prefWidth="74.0" styleClass="btn" text="Save" />
+         </children>
+      </HBox>
+      <JFXButton fx:id="btnBrowse" buttonType="RAISED" layoutX="341.0" layoutY="227.0" onAction="#browseImage" prefHeight="30.0" prefWidth="141.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Browse" AnchorPane.leftAnchor="341.0" />
+      <StackPane layoutX="336.0" layoutY="55.0" prefHeight="150.0" prefWidth="147.0" styleClass="profile-pic" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.topAnchor="55.0">
+         <children>
+            <ImageView fx:id="imageViewUser" fitHeight="152.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <Label fx:id="lblNotification" layoutX="450.0" layoutY="15.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+   </children>
+</AnchorPane>

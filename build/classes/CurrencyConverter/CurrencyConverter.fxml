@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="258.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CurrencyConverter.CurrencyConverterController">
+   <children>
+      <Label fx:id="lblNotification" layoutX="442.0" layoutY="14.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" text="Navigation Message" textFill="#515050" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <VBox layoutX="10.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="511.0" text="Currency Converter">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TabPane stylesheets="@../StyleingCSS/StyleCSS.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                <Tab fx:id="tabInternationExchange" text="Internationl Exchanging">
+                  <content>
+                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="548.0">
+                           <children>
+                              <HBox layoutX="22.0" layoutY="14.0" prefHeight="40.0" prefWidth="628.0" spacing="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <Label text="Base: ">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXComboBox fx:id="comboBoxBaseAddress" prefHeight="25.0" prefWidth="95.0" />
+                                    <Label text="Target">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXComboBox fx:id="comboBoxTargetAddress" prefHeight="25.0" prefWidth="95.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutY="57.0" prefHeight="25.0" prefWidth="449.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Amount:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtAmount" prefHeight="25.0" prefWidth="365.0" promptText="Enter Amount" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <JFXButton fx:id="btnGetRate" buttonType="RAISED" layoutX="75.0" layoutY="94.0" onAction="#onConvert" prefHeight="34.0" prefWidth="366.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Get Rate" />
+                              <Label fx:id="lblCurrencyRate" layoutX="74.0" layoutY="136.0" prefHeight="20.0" prefWidth="369.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab fx:id="tabLocalExchange" text="Sarai Shahzada Exchangeing">
+                  <content>
+                    <AnchorPane fx:id="anchorPaneLocalExchange">
+                           <children>
+                              <Label fx:id="lblSSMessage" layoutX="117.0" layoutY="66.0" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
