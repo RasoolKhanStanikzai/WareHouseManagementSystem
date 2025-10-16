@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import ControlHelper.ControlHelper;
 import static java.awt.SystemColor.window;
+import java.util.HashMap;
 import javafx.concurrent.Worker;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
@@ -66,6 +67,19 @@ public class CurrencyConverterController implements Initializable {
     private AnchorPane anchorPaneLocalExchange;
     @FXML
     private Label lblSSMessage;
+    @FXML
+    private JFXComboBox<String> comboManuallBaseAdd;
+    @FXML
+    private Label lblManullCurrencyRate;
+    @FXML
+    private JFXComboBox<String> comboManuallTargetAdd;
+    @FXML
+    private TextField txtManuallExchangeRate;
+    @FXML
+    private TextField txtManuallAmount;
+    @FXML
+    private JFXButton btnGetManuallRate;
+    
     
     private void fetchSymbols() {
         Task<Void> task = new Task<Void>() {
@@ -325,9 +339,25 @@ public void onConverted(String value) {
     });
 }
 
+
+    @FXML
+    private void manuallConverter(){
+    
+    double exchangeRate=Double.parseDouble(txtManuallExchangeRate.getText());
+    double amount=Double.parseDouble(txtManuallAmount.getText());
+    double totalAmount=amount*exchangeRate;
+    lblManullCurrencyRate.setText("Total Amount is: "+totalAmount);
+  
+            
+    
+}
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fetchSymbols();
         loadSaraiShahzadaRate();  
+        comboManuallBaseAdd.getItems().clear();
+        comboManuallTargetAdd.getItems().clear();
+        comboManuallBaseAdd.getItems().addAll(COMMON_CURRENCIES);
+        comboManuallTargetAdd.getItems().addAll(COMMON_CURRENCIES);
     }    
 }

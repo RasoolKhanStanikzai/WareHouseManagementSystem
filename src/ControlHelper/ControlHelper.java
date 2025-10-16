@@ -4,18 +4,26 @@
  */
 package ControlHelper;
 
+import com.jfoenix.controls.JFXComboBox;
+import java.util.List;
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
+import DatabaseOperations.CRUDOperations;
+import java.sql.*;
+import java.util.Map;
 
 /**
  *
@@ -64,5 +72,43 @@ public class ControlHelper {
         SortedList<T> sortedData=new SortedList<>(filterData);
         sortedData.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(sortedData);
+    }
+    
+    public static void clearFaileds(Object...params){
+        for(Object node:params){
+            if(node instanceof TextInputControl){
+                TextInputControl cont=(TextInputControl) node;
+                cont.setText("");
+            }
+            if(node instanceof JFXComboBox){
+                JFXComboBox combo=(JFXComboBox) node;
+                combo.getTooltip().getText();
+            }
+        }
+    }
+    // Generic method to fill combo box with any data type not from database
+    public static <T> void fillComboBox(ComboBox<T> comboBox,List<T> item){
+        ObservableList<T> obList=FXCollections.observableArrayList(item);
+        comboBox.setItems(obList);
+    }
+    
+    // Generic  method to fil combo box with any data type from database
+    public static <T> void fillComboBox(ComboBox<T> comboBox,String query,RowMapper<T> mapper,Object...params){
+        CRUDOperations operations=new CRUDOperations();
+        List<Map<String,Object>> data=operations.retrieve(query, params);
+        ObservableList<T> items=FXCollections.observableArrayList();
+        
+        for(Map<String,Object> row:data){
+            T item = mapper.mapRow(row);
+            if(items!=null){
+                items.add(item);
+            }
+        }
+        comboBox.setItems(items);
+    }
+    
+    
+    public interface RowMapper<T>{
+        T mapRow(Map<String,Object> row);
     }
 }

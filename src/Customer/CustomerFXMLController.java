@@ -162,7 +162,7 @@ public class CustomerFXMLController implements Initializable {
         tableView.setItems(customerList);
         // Searching in text field
         ControlHelper.enableUniversalSearch(txtSearch, tableView, customerList);
-        
+       // counting customers in the Dashboard Stacked Pane
        DashboardModel.getInstance().setCustomerCount(customerList.size());
     }
     private void clearFields(){

@@ -136,6 +136,7 @@ public class FXMLDocumentController implements Initializable {
     private void loadUserFXML(){
         loadPage("UserFXML");
     }
+    @FXML
     private void loadProductFXML(){
         loadPage("ProductFXML");
     }

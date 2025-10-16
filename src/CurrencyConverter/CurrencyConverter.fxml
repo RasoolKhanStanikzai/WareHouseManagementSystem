@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="258.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CurrencyConverter.CurrencyConverterController">
+<AnchorPane prefHeight="355.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CurrencyConverter.CurrencyConverterController">
    <children>
       <Label fx:id="lblNotification" layoutX="442.0" layoutY="14.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" text="Navigation Message" textFill="#515050" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <VBox layoutX="10.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -88,6 +88,78 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
+                  <Tab text="Manuall Converter">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="210.0" prefWidth="528.0">
+                           <children>
+                              <HBox prefHeight="40.0" prefWidth="527.0" spacing="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <Label text="Base: ">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXComboBox fx:id="comboManuallBaseAdd" prefHeight="25.0" prefWidth="95.0" />
+                                    <Label text="Target">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXComboBox fx:id="comboManuallTargetAdd" prefHeight="25.0" prefWidth="95.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutY="100.0" prefHeight="29.0" prefWidth="525.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Amount:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtManuallAmount" prefHeight="29.0" prefWidth="373.0" promptText="Enter Amount" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css">
+                                       <HBox.margin>
+                                          <Insets left="40.0" top="5.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox layoutY="63.0" prefHeight="29.0" prefWidth="495.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Exchange Rate:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtManuallExchangeRate" prefHeight="29.0" prefWidth="373.0" promptText="Enter Amount" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <JFXButton fx:id="btnGetManuallRate" buttonType="RAISED" layoutX="122.0" layoutY="146.0" onAction="#manuallConverter" prefHeight="34.0" prefWidth="373.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Get Rate" />
+                              <Label fx:id="lblManullCurrencyRate" layoutX="124.0" layoutY="187.0" prefHeight="20.0" prefWidth="369.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </children>
