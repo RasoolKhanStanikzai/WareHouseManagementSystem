@@ -23,17 +23,36 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import ControlHelper.ControlHelper;
-import static java.awt.SystemColor.window;
-import java.util.HashMap;
+import DataModels.CountryItemModel;
+import DataModels.CurrencyModel;
+import DataModels.Session;
+import DataModels.UserModel;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
-public class CurrencyConverterController implements Initializable {
+import DataValidations.TextFieldValidations;
+import DatabaseOperations.CRUDOperations;
+import javafx.geometry.Pos;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
+import javafx.util.Pair;
 
+public class CurrencyConverterController implements Initializable {
+    CurrencyModel currencyModel;
+    CRUDOperations operations=new CRUDOperations();
+    UserModel currentUser=Session.getCurrentUser();
     @FXML
     private JFXComboBox<String> comboBoxBaseAddress;
     @FXML
@@ -79,6 +98,42 @@ public class CurrencyConverterController implements Initializable {
     private TextField txtManuallAmount;
     @FXML
     private JFXButton btnGetManuallRate;
+    @FXML
+    private TextField txtCode;
+    @FXML
+    private TextField txtName;
+    @FXML
+    private TextField txtSymbol;
+    @FXML
+    private ComboBox<CountryItemModel> comboCountry;
+    @FXML
+    private TextField txtDP;
+    @FXML
+    private ComboBox<String> comboStatus;
+    @FXML
+    private TextField txtExchangeRate;
+    @FXML
+    private TableView<CurrencyModel> tblViewCurrency;
+    @FXML
+    private TableColumn<?, ?> colID;
+    @FXML
+    private TableColumn<?, ?> colCode;
+    @FXML
+    private TableColumn<?, ?> colName;
+    @FXML
+    private TableColumn<?, ?> colSymbol;
+    @FXML
+    private TableColumn<?, ?> colCountry;
+    @FXML
+    private TableColumn<?, ?> colDP;
+    @FXML
+    private TableColumn<?, ?> colStatus;
+    @FXML
+    private TableColumn<?, ?> colERate;
+    @FXML
+    private TableColumn<?, ?> colDate;
+    @FXML
+    private TableColumn<CurrencyModel, Void> colAction;
     
     
     private void fetchSymbols() {
@@ -241,47 +296,6 @@ public class CurrencyConverterController implements Initializable {
         new Thread(task).start();
     }
     
-//    private void loadSaraiShahzadaRate(){
-//        WebView webView=new WebView();
-//        WebEngine engine=webView.getEngine();
-//        engine.getLoadWorker().stateProperty().addListener((obs,oldState,newState)->{
-//            if(newState==Worker.State.SUCCEEDED){
-//                anchorPaneLocalExchange.getChildren().clear();
-//                anchorPaneLocalExchange.getChildren().add(webView);
-//                
-//                // Edited for javascript
-//                JSObject window=(JSObject) engine.executeScript("window");
-//                window.setMember("appBridge",this);
-//                
-//                
-//                // inject observer script
-//                String script="var target=document.querySelector('input.to'); "
-//                        + "if(target){"
-//                        + "console.log('Target Found:'+target.value);"
-//                        + "window.appBridge.onConverted(target.value);"
-//                        + "var observer=new MutationObserver(function(mutations){ window.appBridge.onConverted(target.value);});"
-//                        + "observer.observe(target,{attributes:true,attributeFilter:['value']});"
-//                        + "target.addEventListener('input',function(){"
-//                        + "window.appBridge.onConverted(target.value); });}";
-//                engine.executeScript(script);
-//            }
-//            else if(newState==Worker.State.FAILED){
-//                lblSSMessage.setVisible(true);
-//                lblSSMessage.setText("No internet connection,Please connect the internet.");
-//            }
-//        });     
-//        engine.load("https://sarafi.af/fa/exchange-rates/sarai-shahzada");
-//    }
-//    public void onConverted(String value){
-//        Platform.runLater(()->{
-//            latestConvertedValue=value;
-//            System.out.println("Converted: "+latestConvertedValue);
-//            lblSSMessage.setText("Total: "+latestConvertedValue);
-//        });
-//    }
-    
-    
-    
     private void loadSaraiShahzadaRate() {
     WebView webView = new WebView();
     WebEngine engine = webView.getEngine();
@@ -347,10 +361,128 @@ public void onConverted(String value) {
     double amount=Double.parseDouble(txtManuallAmount.getText());
     double totalAmount=amount*exchangeRate;
     lblManullCurrencyRate.setText("Total Amount is: "+totalAmount);
-  
-            
-    
 }
+    private void loadCountries(){
+        Set<CountryItemModel>countrySet=new TreeSet<>((c1,c2)->c1.getName().compareTo(c2.getName()));
+        for(String iso:Locale.getISOCountries()){
+            Locale locale=new Locale("",iso);
+            CountryItemModel item=new CountryItemModel(locale);
+            if(item.getCurrency()!=null)
+                countrySet.add(item);
+        }
+        comboCountry.setItems(FXCollections.observableArrayList(countrySet));
+        comboCountry.setPromptText("Selct Country");
+        ControlHelper.makeComboBoxSearchable(comboCountry);
+        
+        comboCountry.setOnAction(event->{
+            CountryItemModel selected=comboCountry.getValue() instanceof CountryItemModel
+                    ? (CountryItemModel) comboCountry.getValue() : null;
+           
+            if(selected!=null && selected.getCurrency() !=null){
+                txtSymbol.setText(selected.getCurrency().getSymbol(selected.getLocale()));  
+            }   
+        });
+        
+    }
+    
+    @FXML
+    public void saveCurrency(){
+        
+        String query="insert into Currency(Code,Name,Symbol,Country,DecimalPlaces,Status,Rate,CreatedBy)"
+                + "values(?,?,?,?,?,?,?,?)";
+        boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtCode,txtName,txtSymbol,comboCountry,txtDP,comboStatus);
+        boolean isInserted=operations.insert(query, txtCode.getText(),txtName.getText(),
+                txtSymbol.getText(),comboCountry.getValue(),txtDP.getText(),
+                comboStatus.getValue(),txtExchangeRate.getText(),currentUser.getUserID());
+        if(!isEmpty){
+            lblNotification.getStyleClass().add("notification-error");
+            ControlHelper.showNotification(lblNotification, "Required!");
+        }
+        if(isInserted){
+            lblNotification.getStyleClass().add("notification-success");
+            ControlHelper.showNotification(lblNotification, "Record Saved");
+            ControlHelper.clearFaileds(txtCode,txtName,txtSymbol,
+                    comboCountry,txtDP,comboStatus,txtExchangeRate); 
+            loadCurrency();
+            
+        } else{
+            lblNotification.getStyleClass().add("notification-error");
+            ControlHelper.showNotification(lblNotification, "Record Failed");
+        }
+    }
+    private void loadCurrencyStatus(){
+        ObservableList<String> status=FXCollections.observableArrayList("Active","In-Active");
+        comboStatus.setItems(status);
+        ControlHelper.makeComboBoxSearchable(comboStatus);
+        
+    }
+    // Loading currency data into table view
+    private void loadCurrency(){
+        String query="select CurrencyID,code,name,symbol,country,decimalplaces,status,rate from currency";
+        List<Map<String,Object>> data=operations.retrieve(query);
+        
+        ObservableList<CurrencyModel> currencyList=FXCollections.observableArrayList();
+        for(Map<String,Object> row:data){
+            currencyList.add(new CurrencyModel(Integer.parseInt(row.get("CurrencyID").toString()),
+                    row.get("code").toString(),
+                    row.get("name").toString(),
+                    row.get("symbol").toString(),
+                    row.get("country").toString(),
+                    Double.parseDouble(row.get("decimalplaces").toString()),
+                    row.get("status").toString(),
+                    Double.parseDouble(row.get("rate").toString())));
+        }
+        ControlHelper.setColumnsFactory(new Pair<>(colID,"id"),
+                new Pair<>(colCode,"code"),
+                new Pair<>(colName,"name"),
+                new Pair<>(colSymbol,"symbol"),
+                new Pair<>(colCountry,"country"),
+                new Pair<>(colDP,"dp"),
+                new Pair<>(colStatus,"status"),
+                new Pair<>(colERate,"rate")
+        );
+        tblViewCurrency.setItems(currencyList);
+        
+    }
+    
+    private void loadActionButtons(){
+        colAction.setCellFactory(col->new TableCell<CurrencyModel,Void>(){
+           private final JFXButton updateBtn=new JFXButton("Update");
+           private final JFXButton deleteBtn=new JFXButton("Delete");
+                {
+                    updateBtn.setButtonType(JFXButton.ButtonType.RAISED);
+                    updateBtn.getStyleClass().add("btn-update");
+                    deleteBtn.setButtonType(JFXButton.ButtonType.RAISED);
+                    deleteBtn.getStyleClass().add("btn-delete");
+                    
+                    
+                    updateBtn.setOnAction(event->{
+                        CurrencyModel currency=getTableView().getItems().get(getIndex());
+                        txtCode.setText(currency.getCode());
+                        txtName.setText(currency.getName());
+                        txtSymbol.setText(currency.getSymbol());
+                        txtSymbol.setDisable(true);
+                        comboCountry.getEditor().setText(currency.getCountry());
+                        comboStatus.getEditor().setText(currency.getStatus());
+                        txtDP.setText(String.valueOf(currency.getDp()));
+                        txtExchangeRate.setText(String.valueOf(currency.getRate()));
+                        
+                    });
+                }
+           @Override
+            protected void updateItem(Void item,boolean empty){
+                super.updateItem(item, empty);
+                if(empty){
+                    setGraphic(null);
+                }else{
+                    HBox hbox=new HBox(10,updateBtn,deleteBtn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                }
+            }
+        });
+        
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fetchSymbols();
@@ -359,5 +491,9 @@ public void onConverted(String value) {
         comboManuallTargetAdd.getItems().clear();
         comboManuallBaseAdd.getItems().addAll(COMMON_CURRENCIES);
         comboManuallTargetAdd.getItems().addAll(COMMON_CURRENCIES);
+        loadCountries();
+        loadCurrencyStatus();
+        loadCurrency();
+        loadActionButtons();
     }    
 }

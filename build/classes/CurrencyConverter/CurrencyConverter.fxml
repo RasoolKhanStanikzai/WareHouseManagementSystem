@@ -3,16 +3,20 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="355.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CurrencyConverter.CurrencyConverterController">
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CurrencyConverter.CurrencyConverterController">
    <children>
       <Label fx:id="lblNotification" layoutX="442.0" layoutY="14.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" text="Navigation Message" textFill="#515050" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <VBox layoutX="10.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -22,7 +26,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TabPane stylesheets="@../StyleingCSS/StyleCSS.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+            <TabPane prefHeight="505.0" prefWidth="650.0" stylesheets="@../StyleingCSS/StyleCSS.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
               <tabs>
                 <Tab fx:id="tabInternationExchange" text="Internationl Exchanging">
                   <content>
@@ -156,6 +160,111 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Currency Management">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="288.0" prefWidth="630.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="Add New Currency" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <VBox layoutX="14.0" layoutY="44.0" prefHeight="284.0" prefWidth="108.0" spacing="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+                                 <children>
+                                    <Label text="Code:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="15.0" text="Name:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="45.0" text="Symbol:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="75.0" text="Country:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="105.0" text="Decimal Parts:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="135.0" text="Status:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="235.0" text="Exchange Rate:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="118.0" layoutY="45.0" prefHeight="311.0" prefWidth="224.0" spacing="15.0" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="50.0">
+                                 <children>
+                                    <TextField fx:id="txtCode" promptText="Like USD, EURO">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="txtName" layoutX="10.0" layoutY="10.0" promptText="USD Dollars, EURO, Afghani">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="txtSymbol" layoutX="10.0" layoutY="46.0" promptText="؋، $">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                    <ComboBox fx:id="comboCountry" prefHeight="26.0" prefWidth="226.0" promptText="Select Country" />
+                                    <TextField fx:id="txtDP" layoutX="10.0" layoutY="82.0" promptText="Like $12.34 (DP 2)">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                    <ComboBox fx:id="comboStatus" layoutX="10.0" layoutY="118.0" prefHeight="26.0" prefWidth="226.0" promptText="Select Status" />
+                                    <TextField fx:id="txtExchangeRate" layoutX="10.0" layoutY="187.0" promptText="Like $12.34 (DP 2)">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <JFXButton buttonType="RAISED" layoutX="140.0" layoutY="365.0" onAction="#saveCurrency" prefHeight="30.0" prefWidth="92.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Save" />
+                              <Line endX="-100.0" endY="425.0" layoutX="488.0" layoutY="0.5" opacity="0.2" startX="-100.0" AnchorPane.bottomAnchor="1.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="tblViewCurrency" layoutX="408.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="colID" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="colCode" prefWidth="75.0" text="Code" />
+                                    <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+                                    <TableColumn fx:id="colSymbol" prefWidth="75.0" text="Symbol" />
+                                    <TableColumn fx:id="colCountry" prefWidth="75.0" text="Country" />
+                                    <TableColumn fx:id="colDP" prefWidth="75.0" text="Decimal Parts" />
+                                    <TableColumn fx:id="colStatus" prefWidth="75.0" text="Status" />
+                                    <TableColumn fx:id="colERate" prefWidth="75.0" text="Exchange Rate" />
+                                    <TableColumn fx:id="colDate" prefWidth="75.0" text="Date" />
+                                    <TableColumn fx:id="colAction" prefWidth="75.0" text="Action" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
                            </children>
                         </AnchorPane>
                     </content>

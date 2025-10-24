@@ -22,14 +22,16 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import DatabaseOperations.CRUDOperations;
-import java.sql.*;
 import java.util.Map;
+import javafx.application.Platform;
+import javafx.util.Pair;
 
 /**
  *
  * @author Rasookhan
  */
 public class ControlHelper {
+    private static boolean update=false;// when updating searching in combo box 
     public static void showNotification(Label label,String message){
         label.setVisible(true);
         label.setText(message);
@@ -42,6 +44,12 @@ public class ControlHelper {
         columnName.setCellValueFactory(new PropertyValueFactory<>(propertyName));
     }
     
+    // setting column factory for mulitple columns to be called at once
+    public static <Model> void setColumnsFactory(Pair<? extends TableColumn<?,?>,String>...columns){
+        for(Pair<? extends TableColumn<?,?>,String> pair:columns){
+            pair.getKey().setCellValueFactory(new PropertyValueFactory<>(pair.getValue()));
+        }
+    }
     // Alert Message
     public static boolean showAlertMessage(String message, Alert.AlertType type){
         Alert alert=new Alert(type,message,ButtonType.YES,ButtonType.NO);
@@ -110,5 +118,98 @@ public class ControlHelper {
     
     public interface RowMapper<T>{
         T mapRow(Map<String,Object> row);
+    }
+    
+    // Searching in the combo boxes when the user type letter
+    public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox){
+       ObservableList<T> originalItems=FXCollections.observableArrayList(comboBox.getItems());
+       FilteredList<T> filtereditems=new FilteredList<>(originalItems,p->true);
+        comboBox.setEditable(true);
+        // search as user type
+        comboBox.getEditor().textProperty().addListener((obs,oldValue,newValue)->{
+            if(update) return;
+            update=true;
+            comboBox.setValue(null); 
+            final String lower=newValue.toLowerCase();
+            filtereditems.setPredicate(item->{
+                if(item==null) return false;
+                return item.toString().toLowerCase().contains(lower);
+            });
+            comboBox.setItems(FXCollections.observableArrayList(filtereditems));
+            comboBox.show();
+            update=false;
+        });
+        
+        // restoreing full list
+        comboBox.focusedProperty().addListener((obs,oldValue,nowFocused)->{
+            if(update)return;
+            update=true;
+            if(!nowFocused){
+            String enteredText=comboBox.getEditor().getText();
+            if(comboBox.getValue()==null || !comboBox.getValue().toString().equalsIgnoreCase(enteredText)){
+            boolean matchFound=originalItems.stream().anyMatch(items->items.toString().equalsIgnoreCase(enteredText));
+            
+            if(matchFound){// edited as matchFound
+                for(T item:originalItems){
+                    if(item.toString().equalsIgnoreCase(enteredText)){
+                        comboBox.setValue(item);
+                        break;
+                    }
+                }
+            }else{
+                comboBox.getEditor().setText("");
+                comboBox.setValue(null);
+                 }
+            }
+            comboBox.setItems(originalItems);
+            }
+            update=false;
+        });
+    }
+     // Searching in the JFXcombo boxes when the user type letter
+    public static <T> void makeJFXComboBoxSearchable(JFXComboBox<T> comboBox){
+        ObservableList<T> originalItems=FXCollections.observableArrayList(comboBox.getItems());
+       FilteredList<T> filtereditems=new FilteredList<>(originalItems,p->true);
+        comboBox.setEditable(true);
+        // search as user type
+        comboBox.getEditor().textProperty().addListener((obs,oldValue,newValue)->{
+            if(update) return;
+            update=true;
+            comboBox.setValue(null); 
+            final String lower=newValue.toLowerCase();
+            filtereditems.setPredicate(item->{
+                if(item==null) return false;
+                return item.toString().toLowerCase().contains(lower);
+            });
+            comboBox.setItems(FXCollections.observableArrayList(filtereditems));
+            comboBox.show();
+            update=false;
+        });
+        
+        // restoreing full list
+        comboBox.focusedProperty().addListener((obs,oldValue,nowFocused)->{
+            if(update)return;
+            update=true;
+            if(!nowFocused){
+            String enteredText=comboBox.getEditor().getText();
+            if(comboBox.getValue()==null || !comboBox.getValue().toString().equalsIgnoreCase(enteredText)){
+            boolean matchFound=originalItems.stream().anyMatch(items->items.toString().equalsIgnoreCase(enteredText));
+            
+            if(matchFound){// edited as matchFound
+                for(T item:originalItems){
+                    if(item.toString().equalsIgnoreCase(enteredText)){
+                        comboBox.setValue(item);
+                        break;
+                    }
+                }
+            }else{
+                comboBox.getEditor().setText("");
+                comboBox.setValue(null);
+                 }
+            }
+            comboBox.setItems(originalItems);
+            }
+            update=false;
+        });
     }
 }
