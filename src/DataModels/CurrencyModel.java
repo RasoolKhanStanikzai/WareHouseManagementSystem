@@ -14,15 +14,17 @@ public class CurrencyModel {
     
     private int id;
     private String code,name,symbol,country;
-    private double dp;
+    private int dp;
     private String status;
     private double rate;
     private Timestamp createAt;
     private String createdBy;
     private Timestamp updateAt;
     private String updateBy;
+    private Timestamp deletedAt;
+    private String deletedBy;
 
-    public CurrencyModel(int id, String code, String name, String symbol, String country, double dp, String status, double rate) {
+    public CurrencyModel(int id, String code, String name, String symbol, String country, int dp, String status, double rate) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -33,7 +35,8 @@ public class CurrencyModel {
         this.rate = rate;
     }
 
-    public CurrencyModel(int id, String code, String name, String symbol, String country, double dp, String status, double rate, Timestamp createAt, String createdBy, Timestamp updateAt, String updateBy) {
+    public CurrencyModel(int id, String code, String name, String symbol, String country, int dp, String status, double rate, Timestamp createAt, String createdBy, Timestamp updateAt, String updateBy,
+            Timestamp deletedAt,String deletedBy) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -46,6 +49,8 @@ public class CurrencyModel {
         this.createdBy = createdBy;
         this.updateAt = updateAt;
         this.updateBy = updateBy;
+        this.deletedAt=deletedAt;
+        this.deletedBy=deletedBy;
     }
 
     public int getId() {
@@ -92,7 +97,7 @@ public class CurrencyModel {
         return dp;
     }
 
-    public void setDp(double dp) {
+    public void setDp(int dp) {
         this.dp = dp;
     }
 
@@ -143,9 +148,26 @@ public class CurrencyModel {
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
-    
-    
-    
-    
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+     
+    @Override
+    public String toString(){
+        return name;
+    }
     
 }

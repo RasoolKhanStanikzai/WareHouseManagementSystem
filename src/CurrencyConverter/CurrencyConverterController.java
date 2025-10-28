@@ -43,6 +43,7 @@ import netscape.javascript.JSObject;
 import DataValidations.TextFieldValidations;
 import DatabaseOperations.CRUDOperations;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -134,6 +135,12 @@ public class CurrencyConverterController implements Initializable {
     private TableColumn<?, ?> colDate;
     @FXML
     private TableColumn<CurrencyModel, Void> colAction;
+    @FXML
+    private JFXButton btnSaveAndUpdateCurrency;
+    @FXML
+    private JFXButton btnCancelCurrency;
+    @FXML
+    private Label lblSelectedCurrencyID;
     
     
     private void fetchSymbols() {
@@ -381,13 +388,12 @@ public void onConverted(String value) {
             if(selected!=null && selected.getCurrency() !=null){
                 txtSymbol.setText(selected.getCurrency().getSymbol(selected.getLocale()));  
             }   
-        });
-        
+        }); 
     }
     
     @FXML
     public void saveCurrency(){
-        
+        if(btnSaveAndUpdateCurrency.getText().equals("Save")){
         String query="insert into Currency(Code,Name,Symbol,Country,DecimalPlaces,Status,Rate,CreatedBy)"
                 + "values(?,?,?,?,?,?,?,?)";
         boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtCode,txtName,txtSymbol,comboCountry,txtDP,comboStatus);
@@ -408,6 +414,18 @@ public void onConverted(String value) {
         } else{
             lblNotification.getStyleClass().add("notification-error");
             ControlHelper.showNotification(lblNotification, "Record Failed");
+            }
+        } else{
+            String query="update Currency set code=?,name=?,symbol=?,country=?,decimalplaces=?,status=?,rate=?,updatedBy=?,UpdatedAt= NOW() where CurrencyID=?";
+            operations.update(query,txtCode.getText(),txtName.getText(),
+                    txtSymbol.getText(),comboCountry.getEditor().getText(),
+                    txtDP.getText(),comboStatus.getEditor().getText(),txtExchangeRate.getText(),currentUser.getUserID(),Integer.parseInt(lblSelectedCurrencyID.getText()));
+            lblNotification.getStyleClass().add("notification-info");
+            ControlHelper.showNotification(lblNotification, "Record Updated");
+            ControlHelper.clearFaileds(lblSelectedCurrencyID,txtCode,txtName,txtSymbol,comboCountry,comboStatus,txtExchangeRate,txtDP);
+            lblSelectedCurrencyID.setVisible(false);
+            btnSaveAndUpdateCurrency.setText("Save"); 
+            loadCurrency();
         }
     }
     private void loadCurrencyStatus(){
@@ -418,7 +436,7 @@ public void onConverted(String value) {
     }
     // Loading currency data into table view
     private void loadCurrency(){
-        String query="select CurrencyID,code,name,symbol,country,decimalplaces,status,rate from currency";
+        String query="select CurrencyID,code,name,symbol,country,decimalplaces,status,rate from currency Where DeletedAT IS NULL";
         List<Map<String,Object>> data=operations.retrieve(query);
         
         ObservableList<CurrencyModel> currencyList=FXCollections.observableArrayList();
@@ -428,7 +446,7 @@ public void onConverted(String value) {
                     row.get("name").toString(),
                     row.get("symbol").toString(),
                     row.get("country").toString(),
-                    Double.parseDouble(row.get("decimalplaces").toString()),
+                    Integer.parseInt(row.get("decimalplaces").toString()),
                     row.get("status").toString(),
                     Double.parseDouble(row.get("rate").toString())));
         }
@@ -458,6 +476,7 @@ public void onConverted(String value) {
                     
                     updateBtn.setOnAction(event->{
                         CurrencyModel currency=getTableView().getItems().get(getIndex());
+                        lblSelectedCurrencyID.setText(String.valueOf(currency.getId()));
                         txtCode.setText(currency.getCode());
                         txtName.setText(currency.getName());
                         txtSymbol.setText(currency.getSymbol());
@@ -466,7 +485,27 @@ public void onConverted(String value) {
                         comboStatus.getEditor().setText(currency.getStatus());
                         txtDP.setText(String.valueOf(currency.getDp()));
                         txtExchangeRate.setText(String.valueOf(currency.getRate()));
+                        btnSaveAndUpdateCurrency.setText("Update");
                         
+                    });
+                    deleteBtn.setOnAction(event->{
+                        CurrencyModel currency=getTableView().getItems().get(getIndex());
+                        boolean confirmed=ControlHelper.showAlertMessage("Are you sure to delete", Alert.AlertType.WARNING);
+                        if(confirmed){
+                            String query="update currency set DeletedBy=?,DeletedAt=NOW() where CurrencyID=?";
+                            boolean success=operations.delete(query,currentUser.getUserID(),currency.getId());
+                            if(success){
+                                loadCurrency();
+                                getTableView().getItems().remove(currency);
+                                lblNotification.getStyleClass().add("notification-success");
+                                ControlHelper.showNotification(lblNotification, "Record Deleted Successfully");
+                                loadCurrency();
+                            } else{
+                                lblNotification.getStyleClass().add("notification-error");
+                                ControlHelper.showNotification(lblNotification, "Deleted Failed");
+                                
+                            }
+                        }
                     });
                 }
            @Override
@@ -482,6 +521,12 @@ public void onConverted(String value) {
             }
         });
         
+    }
+    @FXML
+    private void clearFields(){
+        btnSaveAndUpdateCurrency.setText("Save");
+         ControlHelper.clearFaileds(lblSelectedCurrencyID,txtCode,txtName,txtSymbol,comboCountry,comboStatus,txtExchangeRate,txtDP);
+         
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

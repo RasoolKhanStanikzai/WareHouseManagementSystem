@@ -173,7 +173,7 @@
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <VBox layoutX="14.0" layoutY="44.0" prefHeight="284.0" prefWidth="108.0" spacing="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+                              <VBox layoutX="14.0" layoutY="44.0" prefHeight="284.0" prefWidth="108.0" spacing="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0">
                                  <children>
                                     <Label text="Code:">
                                        <font>
@@ -185,12 +185,12 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="45.0" text="Symbol:">
+                                    <Label layoutX="10.0" layoutY="75.0" text="Country:">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="75.0" text="Country:">
+                                    <Label layoutX="10.0" layoutY="45.0" text="Symbol:">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -215,7 +215,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox layoutX="118.0" layoutY="45.0" prefHeight="311.0" prefWidth="224.0" spacing="15.0" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="50.0">
+                              <VBox layoutX="118.0" layoutY="45.0" prefHeight="311.0" prefWidth="224.0" spacing="15.0" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="60.0">
                                  <children>
                                     <TextField fx:id="txtCode" promptText="Like USD, EURO">
                                        <font>
@@ -227,12 +227,12 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </TextField>
+                                    <ComboBox fx:id="comboCountry" prefHeight="26.0" prefWidth="226.0" promptText="Select Country" />
                                     <TextField fx:id="txtSymbol" layoutX="10.0" layoutY="46.0" promptText="؋، $">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </TextField>
-                                    <ComboBox fx:id="comboCountry" prefHeight="26.0" prefWidth="226.0" promptText="Select Country" />
                                     <TextField fx:id="txtDP" layoutX="10.0" layoutY="82.0" promptText="Like $12.34 (DP 2)">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
@@ -246,7 +246,7 @@
                                     </TextField>
                                  </children>
                               </VBox>
-                              <JFXButton buttonType="RAISED" layoutX="140.0" layoutY="365.0" onAction="#saveCurrency" prefHeight="30.0" prefWidth="92.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Save" />
+                              <JFXButton fx:id="btnSaveAndUpdateCurrency" buttonType="RAISED" layoutX="140.0" layoutY="383.0" onAction="#saveCurrency" prefHeight="30.0" prefWidth="92.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Save" />
                               <Line endX="-100.0" endY="425.0" layoutX="488.0" layoutY="0.5" opacity="0.2" startX="-100.0" AnchorPane.bottomAnchor="1.0" AnchorPane.topAnchor="0.0" />
                               <TableView fx:id="tblViewCurrency" layoutX="408.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                                 <columns>
@@ -265,6 +265,12 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
+                              <JFXButton fx:id="btnCancelCurrency" buttonType="RAISED" layoutX="244.0" layoutY="383.0" onAction="#clearFields" prefHeight="30.0" prefWidth="92.0" styleClass="btn" text="Cancel" />
+                              <Label fx:id="lblSelectedCurrencyID" layoutX="216.0" layoutY="35.0">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                     </content>

@@ -5,13 +5,16 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.ProductFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="381.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.ProductFXMLController">
    <children>
       <HBox layoutX="14.0" layoutY="14.0" prefHeight="60.0" prefWidth="203.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="397.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,7 +28,7 @@
             </Label>
          </children>
       </HBox>
-      <VBox layoutX="14.0" layoutY="60.0" prefHeight="244.0" prefWidth="241.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+      <VBox layoutX="180.0" layoutY="60.0" prefHeight="244.0" prefWidth="241.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="80.0">
          <children>
             <TextField fx:id="txtProductName" promptText="Product Name" styleClass="form-control" />
             <ComboBox fx:id="comboCategory" prefHeight="25.0" prefWidth="250.0" promptText="Select Category" />
@@ -35,7 +38,7 @@
             <ComboBox fx:id="comboCurrency" prefHeight="25.0" prefWidth="252.0" promptText="Select Currency" />
          </children></VBox>
       <Label fx:id="lblNotification" layoutX="558.0" layoutY="14.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-      <HBox layoutX="10.0" layoutY="304.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+      <HBox layoutX="180.0" layoutY="324.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="324.0">
          <children>
             <JFXButton buttonType="RAISED" styleClass="btn" text="Save">
                <cursor>
@@ -49,5 +52,51 @@
             </JFXButton>
          </children>
       </HBox>
+      <VBox layoutX="14.0" layoutY="60.0" prefHeight="244.0" prefWidth="151.0" spacing="22.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <Label text="ProductName:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="10.0" text="Select Category:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="40.0" text="Unit Price:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="70.0" text="Cost Price:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="100.0" text="Sale Price:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="130.0" text="Select Currency:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Line endX="-100.0" endY="300.0" layoutX="535.0" layoutY="96.0" opacity="0.3" startX="-100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="70.0" />
+      <TableView layoutX="446.0" layoutY="70.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="ID" />
+          <TableColumn prefWidth="75.0" text="Product Name" />
+            <TableColumn prefWidth="75.0" text="Category" />
+            <TableColumn prefWidth="75.0" text="Unit Price" />
+            <TableColumn prefWidth="75.0" text="Cost Price" />
+            <TableColumn prefWidth="75.0" text="Sale Price" />
+            <TableColumn prefWidth="75.0" text="Country" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

@@ -190,7 +190,6 @@ public class CustomerFXMLController implements Initializable {
                         boolean confirmed=ControlHelper.showAlertMessage("Are you sure to delete the record!", AlertType.CONFIRMATION);
                         if(confirmed){
                             String query="update customer set DeletedBy=?,DeletedAt=NOW() WHERE CustomerID=?";
-                       // String query="Delete  from customer where CustomerID=?";
                         boolean success=operation.delete(query,currentUser.getUserID() ,customer.getCustomerID());
                         if(success){
                              loadCustomerData();

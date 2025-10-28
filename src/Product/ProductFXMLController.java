@@ -4,7 +4,6 @@
  */
 package Product;
 
-import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -12,9 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import DatabaseOperations.*;
-import DataValidations.*;
 import ControlHelper.ControlHelper;
 import DataModels.CategoryModel;
+import DataModels.CurrencyModel;
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.control.ComboBox;
 /**
@@ -37,7 +36,7 @@ public class ProductFXMLController implements Initializable {
     @FXML
     private TextField txtSalePrice;
     @FXML
-    private ComboBox<?> comboCurrency;
+    private ComboBox<CurrencyModel> comboCurrency;
     @FXML
     private JFXButton btnClear;
 
@@ -60,8 +59,17 @@ public class ProductFXMLController implements Initializable {
     
     // loading combo box category
     private void loadCategoryComboBox(){
+       
         ControlHelper.fillComboBox(comboCategory, "Select CategoryID,CategoryName,description from Category where DeletedAT IS NULL",
                 row-> new CategoryModel((int) row.get("CategoryID"),(String) row.get("CategoryName"),(String)row.get("description"))); 
+         ControlHelper.makeComboBoxSearchable(comboCategory);
+    }
+    private void loadCurrency(){
+        String query="select CurrencyID,Code,Name,Symbol,Country,DecimalPlaces,Status,Rate from Currency where DeletedAt IS NULL";
+        ControlHelper.fillComboBox(comboCurrency, query, row->new CurrencyModel((int)row.get("CurrencyID"),(String)row.get("Code"),(String)row.get("Name"),
+                (String)row.get("Symbol"),(String)row.get("Country"),(int)row.get("DecimalPlaces"),
+                (String)row.get("Status"),(double)row.get("Rate")));
+        ControlHelper.makeComboBoxSearchable(comboCurrency);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -69,6 +77,6 @@ public class ProductFXMLController implements Initializable {
             ControlHelper.clearFaileds(txtProductName,comboCategory,txtUnitPrice,txtSalePrice,comboCurrency);  
         });
         loadCategoryComboBox();
+        loadCurrency();
     }    
-    
 }

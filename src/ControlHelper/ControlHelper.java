@@ -90,7 +90,17 @@ public class ControlHelper {
             }
             if(node instanceof JFXComboBox){
                 JFXComboBox combo=(JFXComboBox) node;
-                combo.getTooltip().getText();
+                combo.getSelectionModel().clearSelection();
+                combo.getEditor().clear();
+            }
+            if(node instanceof ComboBox){
+                ComboBox combo=(ComboBox) node;
+                combo.getSelectionModel().clearSelection();
+                combo.getEditor().clear();
+            }
+            if(node instanceof Label){
+                Label lbl=(Label) node;
+                lbl.setText("");
             }
         }
     }
@@ -121,95 +131,108 @@ public class ControlHelper {
     }
     
     // Searching in the combo boxes when the user type letter
-    public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox){
-       ObservableList<T> originalItems=FXCollections.observableArrayList(comboBox.getItems());
-       FilteredList<T> filtereditems=new FilteredList<>(originalItems,p->true);
-        comboBox.setEditable(true);
-        // search as user type
-        comboBox.getEditor().textProperty().addListener((obs,oldValue,newValue)->{
-            if(update) return;
-            update=true;
-            comboBox.setValue(null); 
-            final String lower=newValue.toLowerCase();
-            filtereditems.setPredicate(item->{
-                if(item==null) return false;
-                return item.toString().toLowerCase().contains(lower);
-            });
-            comboBox.setItems(FXCollections.observableArrayList(filtereditems));
+    public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox) {
+    if (comboBox.getItems().isEmpty()) return; // prevent crash on empty combo
+
+    ObservableList<T> originalItems = FXCollections.observableArrayList(comboBox.getItems());
+    FilteredList<T> filteredItems = new FilteredList<>(originalItems, p -> true);
+    comboBox.setEditable(true);
+
+    comboBox.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+        if (update) return;
+        update = true;
+
+        String lower = newValue.toLowerCase();
+        filteredItems.setPredicate(item -> item != null && item.toString().toLowerCase().contains(lower));
+
+        ObservableList<T> newItems = FXCollections.observableArrayList(filteredItems);
+        comboBox.setItems(newItems);
+
+        if (!newItems.isEmpty()) {
             comboBox.show();
-            update=false;
-        });
-        
-        // restoreing full list
-        comboBox.focusedProperty().addListener((obs,oldValue,nowFocused)->{
-            if(update)return;
-            update=true;
-            if(!nowFocused){
-            String enteredText=comboBox.getEditor().getText();
-            if(comboBox.getValue()==null || !comboBox.getValue().toString().equalsIgnoreCase(enteredText)){
-            boolean matchFound=originalItems.stream().anyMatch(items->items.toString().equalsIgnoreCase(enteredText));
-            
-            if(matchFound){// edited as matchFound
-                for(T item:originalItems){
-                    if(item.toString().equalsIgnoreCase(enteredText)){
-                        comboBox.setValue(item);
-                        break;
+        } else {
+            comboBox.hide();
+        }
+        update = false;
+    });
+    comboBox.focusedProperty().addListener((obs, oldValue, nowFocused) -> {
+        if (update) return;
+        update = true;
+
+        if (!nowFocused) {
+            String enteredText = comboBox.getEditor().getText();
+            if (comboBox.getValue() == null || !comboBox.getValue().toString().equalsIgnoreCase(enteredText)) {
+                boolean matchFound = originalItems.stream()
+                        .anyMatch(item -> item.toString().equalsIgnoreCase(enteredText));
+
+                if (matchFound) {
+                    for (T item : originalItems) {
+                        if (item.toString().equalsIgnoreCase(enteredText)) {
+                            comboBox.setValue(item);
+                            break;
+                        }
                     }
+                } else {
+                    comboBox.getEditor().setText("");
+                    comboBox.setValue(null);
                 }
-            }else{
-                comboBox.getEditor().setText("");
-                comboBox.setValue(null);
-                 }
             }
             comboBox.setItems(originalItems);
-            }
-            update=false;
-        });
-    }
+        }
+        update = false;
+    });
+}
+
      // Searching in the JFXcombo boxes when the user type letter
     public static <T> void makeJFXComboBoxSearchable(JFXComboBox<T> comboBox){
-        ObservableList<T> originalItems=FXCollections.observableArrayList(comboBox.getItems());
-       FilteredList<T> filtereditems=new FilteredList<>(originalItems,p->true);
-        comboBox.setEditable(true);
-        // search as user type
-        comboBox.getEditor().textProperty().addListener((obs,oldValue,newValue)->{
-            if(update) return;
-            update=true;
-            comboBox.setValue(null); 
-            final String lower=newValue.toLowerCase();
-            filtereditems.setPredicate(item->{
-                if(item==null) return false;
-                return item.toString().toLowerCase().contains(lower);
-            });
-            comboBox.setItems(FXCollections.observableArrayList(filtereditems));
+        if (comboBox.getItems().isEmpty()) return; // prevent crash on empty combo
+
+    ObservableList<T> originalItems = FXCollections.observableArrayList(comboBox.getItems());
+    FilteredList<T> filteredItems = new FilteredList<>(originalItems, p -> true);
+    comboBox.setEditable(true);
+
+    comboBox.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+        if (update) return;
+        update = true;
+
+        String lower = newValue.toLowerCase();
+        filteredItems.setPredicate(item -> item != null && item.toString().toLowerCase().contains(lower));
+
+        ObservableList<T> newItems = FXCollections.observableArrayList(filteredItems);
+        comboBox.setItems(newItems);
+
+        if (!newItems.isEmpty()) {
             comboBox.show();
-            update=false;
-        });
-        
-        // restoreing full list
-        comboBox.focusedProperty().addListener((obs,oldValue,nowFocused)->{
-            if(update)return;
-            update=true;
-            if(!nowFocused){
-            String enteredText=comboBox.getEditor().getText();
-            if(comboBox.getValue()==null || !comboBox.getValue().toString().equalsIgnoreCase(enteredText)){
-            boolean matchFound=originalItems.stream().anyMatch(items->items.toString().equalsIgnoreCase(enteredText));
-            
-            if(matchFound){// edited as matchFound
-                for(T item:originalItems){
-                    if(item.toString().equalsIgnoreCase(enteredText)){
-                        comboBox.setValue(item);
-                        break;
+        } else {
+            comboBox.hide();
+        }
+        update = false;
+    });
+    comboBox.focusedProperty().addListener((obs, oldValue, nowFocused) -> {
+        if (update) return;
+        update = true;
+
+        if (!nowFocused) {
+            String enteredText = comboBox.getEditor().getText();
+            if (comboBox.getValue() == null || !comboBox.getValue().toString().equalsIgnoreCase(enteredText)) {
+                boolean matchFound = originalItems.stream()
+                        .anyMatch(item -> item.toString().equalsIgnoreCase(enteredText));
+
+                if (matchFound) {
+                    for (T item : originalItems) {
+                        if (item.toString().equalsIgnoreCase(enteredText)) {
+                            comboBox.setValue(item);
+                            break;
+                        }
                     }
+                } else {
+                    comboBox.getEditor().setText("");
+                    comboBox.setValue(null);
                 }
-            }else{
-                comboBox.getEditor().setText("");
-                comboBox.setValue(null);
-                 }
             }
             comboBox.setItems(originalItems);
-            }
-            update=false;
-        });
+        }
+        update = false;
+    });
     }
 }
