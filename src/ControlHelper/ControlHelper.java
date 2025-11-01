@@ -23,8 +23,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import DatabaseOperations.CRUDOperations;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import javafx.application.Platform;
 import javafx.util.Pair;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -111,25 +114,41 @@ public class ControlHelper {
     }
     
     // Generic  method to fil combo box with any data type from database
-    public static <T> void fillComboBox(ComboBox<T> comboBox,String query,RowMapper<T> mapper,Object...params){
+    public static <T> void fillComboBox(ComboBox<T> comboBox,String query,RowMapper<T> mapper,Function<T,String> displayText,Consumer<T> onSelect,Object...params){
         CRUDOperations operations=new CRUDOperations();
         List<Map<String,Object>> data=operations.retrieve(query, params);
         ObservableList<T> items=FXCollections.observableArrayList();
         
         for(Map<String,Object> row:data){
             T item = mapper.mapRow(row);
-            if(items!=null){
+            if(item!=null){ // small change items changed to item
                 items.add(item);
             }
         }
-        comboBox.setItems(items);
+         comboBox.setItems(items);
+        comboBox.setConverter(new StringConverter<T>(){
+            @Override
+            public String toString(T object) {
+                   return object !=null ? displayText.apply(object) : "";
+            }
+
+            @Override
+            public T fromString(String string) {
+              return null;
+            }
+            
+        });
+       comboBox.valueProperty().addListener((obs,oldValue,newValue)->{
+           if(newValue!=null && onSelect!=null)
+               onSelect.accept(newValue);
+       });
+       
+        
     }
-    
     
     public interface RowMapper<T>{
         T mapRow(Map<String,Object> row);
     }
-    
     // Searching in the combo boxes when the user type letter
     public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox) {
     if (comboBox.getItems().isEmpty()) return; // prevent crash on empty combo
