@@ -14,6 +14,7 @@ import DatabaseOperations.*;
 import ControlHelper.ControlHelper;
 import DataModels.CategoryModel;
 import DataModels.CurrencyModel;
+import DataModels.DashboardModel;
 import DataModels.ProductModel;
 import DataModels.Session;
 import DataModels.UserModel;
@@ -39,6 +40,7 @@ import javafx.util.StringConverter;
 public class ProductFXMLController implements Initializable {
     CRUDOperations operation=new CRUDOperations();
     UserModel currentUser=Session.getCurrentUser();
+    DashboardModel dashboardModel=new DashboardModel();
     @FXML
     private Label lblNotification;
     @FXML
@@ -156,6 +158,8 @@ public class ProductFXMLController implements Initializable {
                 new Pair<>(colCost,"costPrice"),
                 new Pair<>(colSale,"salePrice"),
                 new Pair<>(colCurrency,"currency"));
+        
+        DashboardModel.getInstance().setProductCount(product.size());
     }
     private void loadBtnAction(){
        colAction.setCellFactory(col->new TableCell<ProductModel,Void>(){

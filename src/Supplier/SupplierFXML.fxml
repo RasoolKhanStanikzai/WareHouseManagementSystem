@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="319.0" prefWidth="618.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Supplier.SupplierFXMLController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Supplier" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <VBox layoutX="14.0" layoutY="53.0" prefHeight="200.0" prefWidth="100.0" spacing="25.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <Label text="Name:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="10.0" text="Phone:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="40.0" text="Email:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="70.0" text="Address:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="135.0" layoutY="74.0" prefHeight="200.0" prefWidth="300.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.topAnchor="80.0">
+         <children>
+            <TextField fx:id="txtName" promptText="Supplier Name" styleClass="form-control" />
+            <TextField fx:id="txtPhone" layoutX="10.0" layoutY="10.0" promptText="Supplier Contact NO" styleClass="form-control" />
+            <TextField fx:id="txtEmail" layoutX="10.0" layoutY="45.0" promptText="Supplier Email Add" styleClass="form-control" />
+            <TextArea fx:id="txtAdd" prefHeight="200.0" prefWidth="200.0" promptText="Physical Add" styleClass="form-control" />
+         </children>
+      </VBox>
+      <JFXButton fx:id="btnSaveAndUpdate" buttonType="RAISED" layoutX="135.0" layoutY="289.0" onAction="#saveAndUpdate" prefHeight="30.0" prefWidth="85.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Save" />
+      <JFXButton fx:id="btnCancel" buttonType="RAISED" layoutX="250.0" layoutY="289.0" onAction="#cancel" prefHeight="30.0" prefWidth="85.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Cancel" />
+      <Label fx:id="lblNotification" layoutX="558.0" layoutY="15.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Line endX="-100.0" endY="225.0" layoutX="553.0" layoutY="81.0" opacity="0.5" startX="-100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="80.0" />
+      <TableView fx:id="tblViewSupplier" layoutX="468.0" layoutY="74.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="470.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
+        <columns>
+          <TableColumn fx:id="colID" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="colPhone" prefWidth="75.0" text="Phone" />
+            <TableColumn fx:id="colEmail" prefWidth="75.0" text="Email" />
+            <TableColumn fx:id="colAddress" prefWidth="75.0" text="Address" />
+            <TableColumn fx:id="colAction" prefWidth="75.0" text="Action" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label fx:id="lblSupplierID" alignment="CENTER" contentDisplay="CENTER" layoutX="135.0" layoutY="40.0" prefHeight="27.0" prefWidth="300.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
