@@ -200,7 +200,7 @@
                               <VBox prefHeight="110.0" prefWidth="176.0">
                                  <children>
                                     <Label prefHeight="18.0" prefWidth="159.0" styleClass="card-title" text="Suppliers" />
-                                    <Label alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
+                                    <Label fx:id="lblSupplierCount" alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
                                     <FontIcon iconColor="GREY" iconLiteral="fas-truck" styleClass="glyph-icon" textAlignment="RIGHT" wrappingWidth="174.0" />
                                  </children>
                               </VBox>

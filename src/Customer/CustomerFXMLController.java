@@ -160,10 +160,11 @@ public class CustomerFXMLController implements Initializable {
         ControlHelper.setColumnFactory(customerEmailColumn, "CustomerEmail");
         ControlHelper.setColumnFactory(customerAddressColumn, "CustomerAddress");
         tableView.setItems(customerList);
+       
         // Searching in text field
         ControlHelper.enableUniversalSearch(txtSearch, tableView, customerList);
        // counting customers in the Dashboard Stacked Pane
-       DashboardModel.getInstance().setCustomerCount(customerList.size());
+        DashboardModel.getInstance().setCustomerCount(customerList.size());
     }
     private void clearFields(){
         lblCustomerID.setText("");

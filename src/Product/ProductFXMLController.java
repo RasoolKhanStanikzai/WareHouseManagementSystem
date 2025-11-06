@@ -40,7 +40,6 @@ import javafx.util.StringConverter;
 public class ProductFXMLController implements Initializable {
     CRUDOperations operation=new CRUDOperations();
     UserModel currentUser=Session.getCurrentUser();
-    DashboardModel dashboardModel=new DashboardModel();
     @FXML
     private Label lblNotification;
     @FXML
@@ -87,17 +86,21 @@ public class ProductFXMLController implements Initializable {
     private void saveRecord(){
         if(btnSaveAndUpdate.getText().equals("Save")){
             String query="insert into Product(Name,CategoryID,Unit,CostPrice,SalePrice,CurrencyID,CreatedBy)values(?,?,?,?,?,?,?)";
-             boolean insert=operation.insert(query, txtProductName.getText(),selectedComboCategoryID,txtUnitPrice.getText(),
+             int insertedProductId=operation.getInsertAndUpdateID(query, txtProductName.getText(),selectedComboCategoryID,txtUnitPrice.getText(),
                 txtCostPrice.getText(),txtSalePrice.getText(),selectedComboCurrencyID,currentUser.getUserID());
-        if(insert){
-            lblNotification.getStyleClass().add("notification-success");
-            ControlHelper.showNotification(lblNotification, "Record inserted");
-            ControlHelper.clearFaileds(txtProductName,comboCategory,txtUnitPrice,txtCostPrice,
-                    txtSalePrice,comboCurrency);
-        }else{
-            lblNotification.getStyleClass().add("notification-error");
-            ControlHelper.showNotification(lblNotification, "Record Failed");
-         }
+             
+             if(insertedProductId>0){
+                 String queryStock="insert into Stock(ProductID,Quantity,LastUpdated) "
+                         + "values(?,0,NOW())";
+                 operation.insert(queryStock, insertedProductId);
+
+                 lblNotification.getStyleClass().add("notification-success");
+                 ControlHelper.showNotification(lblNotification, "Record inserted");
+                  ControlHelper.clearFaileds(txtProductName, comboCategory, txtUnitPrice, txtCostPrice, txtSalePrice, comboCurrency);
+             } else{
+                   lblNotification.getStyleClass().add("notification-error");
+                    ControlHelper.showNotification(lblNotification, "Record Failed");
+             }
         }
         else{
             String query="update Product set Name=?,CategoryID=?,Unit=?,CostPrice=?,SalePrice=?,CurrencyID=?,UpdatedBy=?,UpdatedAt=NOW() Where ProductID=?";
@@ -158,8 +161,7 @@ public class ProductFXMLController implements Initializable {
                 new Pair<>(colCost,"costPrice"),
                 new Pair<>(colSale,"salePrice"),
                 new Pair<>(colCurrency,"currency"));
-        
-        DashboardModel.getInstance().setProductCount(product.size());
+         DashboardModel.getInstance().setProductCount(product.size());
     }
     private void loadBtnAction(){
        colAction.setCellFactory(col->new TableCell<ProductModel,Void>(){

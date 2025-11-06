@@ -138,6 +138,7 @@ public class SupplierFXMLController implements Initializable {
                 new Pair<>(colAddress,"address")
         );
         tblViewSupplier.setItems(supplierList);
+       DashboardModel.getInstance().setSupplierCount(supplierList.size());
     }
     
     private void loadActionButtons(){

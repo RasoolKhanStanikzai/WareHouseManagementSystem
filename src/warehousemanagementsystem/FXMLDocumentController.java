@@ -67,6 +67,8 @@ public class FXMLDocumentController implements Initializable {
     private ImageView userImageView;
     @FXML
     private Label lblProductCount;
+    @FXML
+    private Label lblSupplierCount;
     public void hamburgerAnitmation(){
         sidebarWidth=sidebar.getPrefWidth();
         HamburgerBackArrowBasicTransition burgerTask=new HamburgerBackArrowBasicTransition(hamburger);
@@ -180,6 +182,11 @@ public class FXMLDocumentController implements Initializable {
   private void loadUserLoginFXML(){
       loadPage("UserLoginFXML"); 
   }
+  private void loadDashboardStackPanes(){
+     lblCustomerCount.textProperty().bind(DashboardModel.getInstance().customerCountProperty().asString());
+     lblProductCount.textProperty().bind(DashboardModel.getInstance().productCountProperty().asString());
+     lblSupplierCount.textProperty().bind(DashboardModel.getInstance().supplierCountProperty().asString());
+  }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         preloadPage("Customer","/Customer/CustomerFXML.fxml");
@@ -191,9 +198,7 @@ public class FXMLDocumentController implements Initializable {
         preloadPage("SupplierFXML","/Supplier/SupplierFXML.fxml");
         hamburgerAnitmation();
         dashboardCenterCentents=centerContentVBOX.getChildren().get(0);
-        lblCustomerCount.textProperty().bind(DashboardModel.getInstance().customerCountProperty().asString());
-        lblProductCount.textProperty().bind(DashboardModel.getInstance().productCountProperty().asString());
-       
+        loadDashboardStackPanes();
        if(currentUser!=null){
            lblLoggedUser.setText("Welcome, "+currentUser.getUserFullName());
        } 

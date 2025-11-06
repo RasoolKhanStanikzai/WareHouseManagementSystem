@@ -112,4 +112,24 @@ public class CRUDOperations {
             return false;
         }
     }
+    
+    // Getting the specific id of a row in a table
+    public int getInsertAndUpdateID(String query,Object...params){
+        int generatedId=-1;
+        try(PreparedStatement stmt=connect.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)){
+            setParameters(stmt,params);
+            int affectedRows=stmt.executeUpdate();
+            
+            if(affectedRows>0){
+                try(ResultSet rs=stmt.getGeneratedKeys()){
+                    if(rs.next()){
+                        generatedId=rs.getInt(1);
+                    }
+                }
+            }
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return generatedId;
+    }
 }

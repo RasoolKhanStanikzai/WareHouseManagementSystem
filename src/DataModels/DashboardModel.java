@@ -19,6 +19,7 @@ public class DashboardModel {
     }
     private final IntegerProperty customerCount=new SimpleIntegerProperty(0);
     private final IntegerProperty productCount=new SimpleIntegerProperty(0);
+    private final IntegerProperty supplierCount=new SimpleIntegerProperty(0);
     public IntegerProperty customerCountProperty(){
         return customerCount;
     }
@@ -33,5 +34,12 @@ public class DashboardModel {
     
     public void setProductCount(int count){
         productCount.set(count);
+    }
+    
+    public IntegerProperty supplierCountProperty(){
+        return supplierCount;
+    }
+    public void setSupplierCount(int count){
+        supplierCount.set(count);
     }
 }
