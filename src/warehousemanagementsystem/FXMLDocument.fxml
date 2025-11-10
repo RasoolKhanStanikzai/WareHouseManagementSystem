@@ -31,7 +31,7 @@
                   <String fx:value="sidebar-btn" />
                </styleClass>
             </JFXButton>
-            <JFXButton layoutX="30.0" layoutY="30.0" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Inventory">
+            <JFXButton layoutX="30.0" layoutY="30.0" onAction="#loadStockFXML" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Inventory">
                <graphic>
                   <FontIcon iconLiteral="fas-boxes" styleClass="glyph-icon" />
                </graphic>
@@ -58,7 +58,7 @@
                   <String fx:value="sidebar-btn" />
                </styleClass>
             </JFXButton>
-            <JFXButton layoutX="30.0" layoutY="138.0" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Purchase">
+            <JFXButton layoutX="30.0" layoutY="138.0" onAction="#loadPurchaseFXML" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Purchase">
                <graphic>
                   <FontIcon iconLiteral="fas-file-invoice" styleClass="glyph-icon" />
                </graphic>

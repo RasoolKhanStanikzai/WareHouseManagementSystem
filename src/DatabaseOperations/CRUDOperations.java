@@ -132,4 +132,21 @@ public class CRUDOperations {
         }
         return generatedId;
     }
+    
+    public int getCount(String query,Object...params){
+        int count=0;
+        try(PreparedStatement stmt=connect.prepareStatement(query)){
+            setParameters(stmt,params);
+            
+            try(ResultSet rSet=stmt.executeQuery()){
+                if(rSet.next()){
+                    count=rSet.getInt(1);
+                }
+            } 
+        } catch(SQLException ex){
+            System.err.println("GetCount failed: "+ex.getMessage());
+            ex.printStackTrace();
+        }
+        return count;
+    }
 }

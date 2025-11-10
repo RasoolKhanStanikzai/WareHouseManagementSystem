@@ -12,8 +12,10 @@ import java.security.Timestamp;
  */
 public class ProductModel {
     private int id;
-    private String name,category;
-    private int unit,costPrice,salePrice;
+    private String name;
+    private String category;
+    private String unit;
+    private int costPrice,salePrice;
     private String currency;
     private String createdBy;
     private Timestamp createdAt;
@@ -22,7 +24,13 @@ public class ProductModel {
     private String deletedBy;
     private Timestamp deletedAt;
 
-    public ProductModel(int id, String name, String category, int unit, int costPrice, int salePrice, String currency) {
+    public ProductModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    
+    public ProductModel(int id, String name, String category, String unit, int costPrice, int salePrice, String currency) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -32,7 +40,7 @@ public class ProductModel {
         this.currency = currency;
     }
 
-    public ProductModel(int id, String name, String category, int unit, int costPrice, int salePrice, String currency, String createdBy, Timestamp createdAt, String updateBy, Timestamp updatedAt, String deletedBy, Timestamp deletedAt) {
+    public ProductModel(int id, String name, String category, String unit, int costPrice, int salePrice, String currency, String createdBy, Timestamp createdAt, String updateBy, Timestamp updatedAt, String deletedBy, Timestamp deletedAt) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -72,11 +80,11 @@ public class ProductModel {
         this.category = category;
     }
 
-    public int getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(int unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 

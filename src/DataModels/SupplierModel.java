@@ -20,6 +20,12 @@ public class SupplierModel {
     private Timestamp deletedAt;
     private String deltedBy;
 
+    public SupplierModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    
     public SupplierModel(int id, String name, String phone, String email, String address) {
         this.id = id;
         this.name = name;

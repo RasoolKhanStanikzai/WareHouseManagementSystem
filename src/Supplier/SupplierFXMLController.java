@@ -163,6 +163,13 @@ public class SupplierFXMLController implements Initializable {
             });
             btnDelete.setOnAction(event->{
                 SupplierModel supplier=getTableView().getItems().get(getIndex());
+                String checkQuery="Select count(*) from Purchase Where SupplierID=? AND DeletedAt IS NULL";
+                int count=operation.getCount(checkQuery, supplier.getId());
+                if(count>0){
+                    lblNotification.getStyleClass().add("notification-error");
+                    ControlHelper.showNotification(lblNotification, "Can not Delete this Supplier because it is has Purchases.");
+                    return;
+                }
                 boolean confirm=ControlHelper.showAlertMessage("Are You sure to delete", Alert.AlertType.WARNING);
                 if(confirm){
                     String query="update supplier set DeletedBy=?,DeletedAt=NOW() Where SupplierID=?";

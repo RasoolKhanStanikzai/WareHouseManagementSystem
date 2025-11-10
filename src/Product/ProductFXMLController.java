@@ -106,7 +106,7 @@ public class ProductFXMLController implements Initializable {
             String query="update Product set Name=?,CategoryID=?,Unit=?,CostPrice=?,SalePrice=?,CurrencyID=?,UpdatedBy=?,UpdatedAt=NOW() Where ProductID=?";
             operation.update(query, txtProductName.getText(),selectedComboCategoryID,
                     txtUnitPrice.getText(),txtCostPrice.getText(),txtSalePrice.getText(),selectedComboCurrencyID,currentUser.getUserID()
-                    );
+                   ,Integer.parseInt(lblProductID.getText()) );
             lblNotification.getStyleClass().add("notification-info");
             ControlHelper.showNotification(lblNotification, "Record Updated");
             ControlHelper.clearFaileds(txtProductName,comboCategory,
@@ -143,12 +143,11 @@ public class ProductFXMLController implements Initializable {
                 + "ON p.CurrencyID=cu.CurrencyID where p.DeletedAt IS NULL";
         List<Map<String,Object>> data=operation.retrieve(query);
         ObservableList<ProductModel>product=FXCollections.observableArrayList();
-        
         for(Map<String,Object> row:data){
             product.add(new ProductModel(Integer.parseInt(row.get("ProductID").toString()),
             row.get("Name").toString(),
             row.get("CategoryName").toString(),
-            Integer.parseInt(row.get("Unit").toString()),
+            row.get("Unit").toString(),
             Integer.parseInt(row.get("CostPrice").toString()),
             Integer.parseInt(row.get("SalePrice").toString()),
             row.get("CurrencyName").toString()));
@@ -178,15 +177,36 @@ public class ProductFXMLController implements Initializable {
                             lblProductID.setVisible(true);
                             lblProductID.setText(String.valueOf(product.getId()));
                             txtProductName.setText(product.getName());
-                            comboCategory.getEditor().setText(product.getCategory());
+                           // comboCategory.getEditor().setText(product.getCategory());
                             txtUnitPrice.setText(String.valueOf(product.getUnit()));
                             txtSalePrice.setText(String.valueOf(product.getSalePrice()));
-                            txtCostPrice.setText(String.valueOf(product.getSalePrice()));
-                            comboCurrency.getEditor().setText(product.getCurrency());
+                            txtCostPrice.setText(String.valueOf(product.getCostPrice()));
+                           // comboCurrency.getEditor().setText(product.getCurrency());
+                           
+                           for(CategoryModel cat:comboCategory.getItems()){
+                               if(cat.getName().equals(product.getCategory())){
+                                   comboCategory.getSelectionModel().select(cat);
+                                   break;
+                               }
+                           }
+                           for(CurrencyModel curr:comboCurrency.getItems()){
+                               if(curr.getName().equals(product.getCurrency()))
+                               {
+                                   comboCurrency.getSelectionModel().select(curr);
+                                   break;
+                               }
+                           }
                             btnSaveAndUpdate.setText("Update");
                        });
                        btnDelete.setOnAction(event->{
                            ProductModel product=getTableView().getItems().get(getIndex());
+                           String checkQuery="Select count(*) from purchase Where ProductID=? AND DeletedAt IS NULL";
+                           int count=operation.getCount(checkQuery, product.getId());
+                           if(count>0){
+                               lblNotification.getStyleClass().add("notification-error");
+                               ControlHelper.showNotification(lblNotification, "Cannot delete this product because it has purchases.");
+                               return;
+                           }
                            boolean confirm=ControlHelper.showAlertMessage("Are You sure to delete", Alert.AlertType.WARNING);
                            if(confirm){
                                String query="update Product set DeletedBy=?,DeletedAt=NOW() WHERE ProductID=?";
