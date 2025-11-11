@@ -2,6 +2,8 @@
 
 A JavaFX-based desktop application for managing warehouse operations, designed to efficiently handle inventory, suppliers,currencies, and reporting. Database-driven using MySQL.
 
+⭐ If you find this project helpful, please leave a star!
+
 ## 🚀 Features
 - Add, edit, and delete product records
 - Track inventory levels and stock availability
