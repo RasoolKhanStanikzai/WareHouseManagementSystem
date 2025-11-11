@@ -6,6 +6,7 @@ package Inventory;
 
 import DataModels.StockModel;
 import ControlHelper.ControlHelper;
+import DataModels.DashboardModel;
 import DatabaseOperations.CRUDOperations;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -46,17 +47,22 @@ public class InventoryFXMLController implements Initializable {
         String query="select s.StockID,p.Name as ProductName,s.Quantity,s.LastUpdated from Stock s JOIN Product p ON s.ProductID=p.ProductID";
         List<Map<String,Object>> data=operation.retrieve(query);
         ObservableList<StockModel> stock=FXCollections.observableArrayList();
+        int totalStock=0;
         for(Map<String,Object> row:data){
+            int qty=Integer.parseInt(row.get("Quantity").toString());
+            totalStock+=qty;
             stock.add(new StockModel(Integer.parseInt(row.get("StockID").toString()),
             row.get("ProductName").toString(),
             Integer.parseInt(row.get("Quantity").toString()),
             (LocalDateTime)row.get("LastUpdated")));
+            
         }
         tblViewStock.setItems(stock);
         ControlHelper.setColumnsFactory(new Pair<>(colID,"id"),
                 new Pair<>(colProductName,"name"),
                 new Pair<>(colQuantity,"quantity"),
                 new Pair<>(colDate,"date"));
+        DashboardModel.getInstance().setStockCount(totalStock);
     }
     
     @Override

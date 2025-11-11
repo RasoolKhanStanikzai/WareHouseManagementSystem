@@ -6,6 +6,7 @@ package DataModels;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -20,6 +21,8 @@ public class DashboardModel {
     private final IntegerProperty customerCount=new SimpleIntegerProperty(0);
     private final IntegerProperty productCount=new SimpleIntegerProperty(0);
     private final IntegerProperty supplierCount=new SimpleIntegerProperty(0);
+    private final IntegerProperty stockCount=new SimpleIntegerProperty(0);
+    private final IntegerProperty purchaseCount=new SimpleIntegerProperty(0);
     public IntegerProperty customerCountProperty(){
         return customerCount;
     }
@@ -41,5 +44,19 @@ public class DashboardModel {
     }
     public void setSupplierCount(int count){
         supplierCount.set(count);
+    }
+    
+    public void setStockCount(int count){
+        stockCount.set(count);
+    }
+    public IntegerProperty stockCountProperty(){
+        return stockCount;
+    }
+    
+    public void setPurchaseCount(int count){
+        purchaseCount.set(count);
+    }
+    public IntegerProperty purchaseCountProperty(){
+        return purchaseCount;
     }
 }

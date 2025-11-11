@@ -15,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import ControlHelper.ControlHelper;
 import DataModels.CurrencyModel;
+import DataModels.DashboardModel;
 import DataModels.ProductModel;
 import DataModels.PurchaseModel;
 import DataModels.SupplierModel;
@@ -117,7 +118,10 @@ public class PurchaseFXMLController implements Initializable {
                 + "from purchase pur JOIN supplier s ON pur.SupplierID=s.SupplierID JOIN product p ON pur.ProductID=p.ProductID JOIN currency cu ON pur.CurrencyID=cu.CurrencyID where pur.DeletedAt IS NULL";
         List<Map<String,Object>> data=operation.retrieve(query);
         ObservableList<PurchaseModel> purchase=FXCollections.observableArrayList();
+        int totalPurchases=0;
         for(Map<String,Object> row:data){
+            int purchases=Integer.parseInt(row.get("PricePerQuantity").toString());
+            totalPurchases+=purchases;
             purchase.add(new PurchaseModel(Integer.parseInt(row.get("PurchaseID").toString()),
             row.get("SupplierName").toString(),
             row.get("ProductName").toString(),
@@ -132,6 +136,7 @@ public class PurchaseFXMLController implements Initializable {
                 new Pair<>(colQuantity,"quantity"),
                 new Pair<>(colPrice,"price"),
                 new Pair<>(colCurrency,"currencyName"));
+        DashboardModel.getInstance().setPurchaseCount(totalPurchases);
         
     }
     private void loadActionButtons(){

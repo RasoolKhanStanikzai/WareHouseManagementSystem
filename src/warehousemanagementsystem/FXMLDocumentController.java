@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import DataModels.UserModel;
 import DataModels.Session;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -69,6 +70,10 @@ public class FXMLDocumentController implements Initializable {
     private Label lblProductCount;
     @FXML
     private Label lblSupplierCount;
+    @FXML
+    private Label lblTotalStock;
+    @FXML
+    private Label lblTotalPurchases;
     public void hamburgerAnitmation(){
         sidebarWidth=sidebar.getPrefWidth();
         HamburgerBackArrowBasicTransition burgerTask=new HamburgerBackArrowBasicTransition(hamburger);
@@ -194,6 +199,8 @@ public class FXMLDocumentController implements Initializable {
      lblCustomerCount.textProperty().bind(DashboardModel.getInstance().customerCountProperty().asString());
      lblProductCount.textProperty().bind(DashboardModel.getInstance().productCountProperty().asString());
      lblSupplierCount.textProperty().bind(DashboardModel.getInstance().supplierCountProperty().asString());
+     lblTotalStock.textProperty().bind(DashboardModel.getInstance().stockCountProperty().asString());
+     lblTotalPurchases.textProperty().bind(Bindings.concat(DashboardModel.getInstance().purchaseCountProperty().asString()," AFN"));
   }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

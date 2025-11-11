@@ -189,7 +189,7 @@
                               <VBox prefHeight="110.0" prefWidth="176.0">
                                  <children>
                                     <Label prefHeight="18.0" prefWidth="159.0" styleClass="card-title" text="Inventory Items" />
-                                    <Label alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
+                                    <Label fx:id="lblTotalStock" alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
                                     <FontIcon iconColor="GREY" iconLiteral="fas-boxes" styleClass="glyph-icon" textAlignment="RIGHT" wrappingWidth="174.0" />
                                  </children>
                               </VBox>
@@ -228,7 +228,7 @@
                               <VBox prefHeight="110.0" prefWidth="176.0">
                                  <children>
                                     <Label prefHeight="18.0" prefWidth="159.0" styleClass="card-title" text="Purchases" />
-                                    <Label alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
+                                    <Label fx:id="lblTotalPurchases" alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
                                     <FontIcon iconColor="GREY" iconLiteral="fas-file-invoice" styleClass="glyph-icon" textAlignment="RIGHT" wrappingWidth="174.0" />
                                  </children>
                               </VBox>
