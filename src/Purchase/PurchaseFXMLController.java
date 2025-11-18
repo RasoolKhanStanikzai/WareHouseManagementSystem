@@ -93,10 +93,12 @@ public class PurchaseFXMLController implements Initializable {
            selectedCurrencyID,currentUser.getUserID());
             
             if(insertedPurchasedId>0){
-                String stockQry="Update Stock set Quantity=Quantity+?,LastUpdated=NOW() Where ProductID=?";
-                operation.update(stockQry, txtQuantity.getText(),selectedProductID);
-                ControlHelper.showNotification(lblNotification, "Record Purchased");
+                String stockQry="insert into stock (ProductID,Quantity,LastUpdated) values(?,?,NOW()) ON Duplicate Key Update Quantity=Quantity+Values(Quantity),LastUpdated=NOW()";
+                operation.update(stockQry, selectedProductID,txtQuantity.getText());
+                lblNotification.getStyleClass().add("notification-success");
+                ControlHelper.showNotification(lblNotification, "Product Purchased Successfully");
                 loadPuchaseData();
+                ControlHelper.clearFaileds(comboSupplier,comboProduct,txtQuantity,txtPrice,comboCurrency);
             } else{
                 ControlHelper.showNotification(lblNotification, "Purchase Failed");
             }

@@ -8,6 +8,7 @@ import DataModels.StockModel;
 import ControlHelper.ControlHelper;
 import DataModels.DashboardModel;
 import DatabaseOperations.CRUDOperations;
+import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,6 +42,8 @@ public class InventoryFXMLController implements Initializable {
     private TableColumn<?, ?> colDate;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private JFXButton btnRefresh;
 
     
     private void loadStock(){
@@ -69,6 +72,9 @@ public class InventoryFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadStock();
+        btnRefresh.setOnAction(event->{
+            loadStock();
+        });
        
     }    
     

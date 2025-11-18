@@ -76,8 +76,7 @@ public class SupplierFXMLController implements Initializable {
         boolean isEmail=TextFieldValidations.validateEmail(txtEmail);
         String query="insert into Supplier(Name,Phone,Email,Address,CreatedBy)"
                 + "values(?,?,?,?,?)";
-        boolean isInsert=operation.insert(query, txtName.getText(),txtPhone.getText(),
-                txtEmail.getText(),txtAdd.getText(),currentUser.getUserID());
+        
         if(!isEmpty){
             lblNotification.getStyleClass().add("notification-warnning");
             ControlHelper.showNotification(lblNotification, "Required");
@@ -91,8 +90,10 @@ public class SupplierFXMLController implements Initializable {
         if(!isEmail){
             lblNotification.getStyleClass().add("notification-error");
             ControlHelper.showNotification(lblNotification, "Not an Email Type");
-            return;
+            return ;
         }
+        boolean isInsert=operation.insert(query, txtName.getText(),txtPhone.getText(),
+                txtEmail.getText(),txtAdd.getText(),currentUser.getUserID());
         
         if(isInsert){
             lblNotification.getStyleClass().add("notification-success");
@@ -107,7 +108,7 @@ public class SupplierFXMLController implements Initializable {
       else{
             String query="Update Supplier set name=?,phone=?,email=?,address=?,UpdatedBy=?,UpdatedAt=NOW() where SupplierID=?";
             boolean isUpdated=operation.update(query, txtName.getText(),
-                    txtPhone.getText(),txtEmail.getText(),txtAdd.getText(),currentUser.getUserID());
+                    txtPhone.getText(),txtEmail.getText(),txtAdd.getText(),currentUser.getUserID(),Integer.parseInt(lblSupplierID.getText()));
             if(isUpdated){
                 lblNotification.getStyleClass().add("notification-success");
                 ControlHelper.showNotification(lblNotification, "Record Updated Successfully");

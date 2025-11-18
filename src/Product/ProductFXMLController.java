@@ -97,13 +97,14 @@ public class ProductFXMLController implements Initializable {
                 txtCostPrice.getText(),txtSalePrice.getText(),selectedComboCurrencyID,currentUser.getUserID());
              
              if(insertedProductId>0){
-                 String queryStock="insert into Stock(ProductID,Quantity,LastUpdated) "
-                         + "values(?,0,NOW())";
-                 operation.insert(queryStock, insertedProductId);
+//                 String queryStock="insert into Stock(ProductID,Quantity,LastUpdated) "
+//                         + "values(?,0,NOW())";
+//                 operation.insert(queryStock, insertedProductId);
 
                  lblNotification.getStyleClass().add("notification-success");
-                 ControlHelper.showNotification(lblNotification, "Record inserted");
-                  ControlHelper.clearFaileds(txtProductName, comboCategory, txtUnitPrice, txtCostPrice, txtSalePrice, comboCurrency);
+                 ControlHelper.showNotification(lblNotification, "Product Added");
+                 ControlHelper.clearFaileds(txtProductName, comboCategory, txtUnitPrice, txtCostPrice, txtSalePrice, comboCurrency);
+                 loadProductData();
              } else{
                    lblNotification.getStyleClass().add("notification-error");
                     ControlHelper.showNotification(lblNotification, "Record Failed");
@@ -250,6 +251,7 @@ public class ProductFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         btnClear.setOnAction(event->{
             ControlHelper.clearFaileds(txtProductName,comboCategory,txtUnitPrice,txtSalePrice,comboCurrency,txtCostPrice,lblProductID);  
+            btnSaveAndUpdate.setText("Save");
         });
         loadCategoryComboBox();
         loadCurrency();
