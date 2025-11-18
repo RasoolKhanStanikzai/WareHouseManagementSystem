@@ -25,7 +25,10 @@ import DatabaseOperations.CRUDOperations;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
 
@@ -253,5 +256,10 @@ public class ControlHelper {
         }
         update = false;
     });
+    }
+    
+    // Intege Binding for total Sum
+    public static <T> IntegerBinding totalSum(ObservableList<T> list,ToIntFunction<T> valueExtractor){
+        return Bindings.createIntegerBinding(()->list.stream().mapToInt(valueExtractor).sum(),list);
     }
 }

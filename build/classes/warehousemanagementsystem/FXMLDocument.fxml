@@ -76,6 +76,15 @@
                   <String fx:value="sidebar-btn" />
                </styleClass>
             </JFXButton>
+            <JFXButton layoutX="30.0" layoutY="246.0" onAction="#loadSaleFXML" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Sale">
+               <graphic>
+                  <FontIcon iconLiteral="fas-shopping-cart" styleClass="glyph-icon" />
+               </graphic>
+               <styleClass>
+                  <String fx:value="glyph-icon" />
+                  <String fx:value="sidebar-btn" />
+               </styleClass>
+            </JFXButton>
             <JFXButton layoutX="30.0" layoutY="210.0" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Reports">
                <graphic>
                   <FontIcon iconLiteral="fas-chart-line" styleClass="glyph-icon" />
@@ -227,7 +236,7 @@
                            <children>
                               <VBox prefHeight="110.0" prefWidth="176.0">
                                  <children>
-                                    <Label prefHeight="18.0" prefWidth="159.0" styleClass="card-title" text="Purchases" />
+                                    <Label prefHeight="18.0" prefWidth="159.0" styleClass="card-title" text="Total Purchases" />
                                     <Label fx:id="lblTotalPurchases" alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
                                     <FontIcon iconColor="GREY" iconLiteral="fas-file-invoice" styleClass="glyph-icon" textAlignment="RIGHT" wrappingWidth="174.0" />
                                  </children>
@@ -250,6 +259,17 @@
                            <TilePane.margin>
                               <Insets />
                            </TilePane.margin>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT" layoutX="30.0" layoutY="190.0" prefHeight="150.0" prefWidth="200.0" styleClass="card" stylesheets="@../StyleingCSS/StyleCSS.css">
+                           <children>
+                              <VBox prefHeight="110.0" prefWidth="176.0">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="159.0" styleClass="card-title" text="Total Sales" />
+                                    <Label fx:id="lblTotalSales" alignment="CENTER" prefHeight="92.0" prefWidth="180.0" text="0" />
+                                    <FontIcon iconColor="GREY" iconLiteral="fas-box" styleClass="glyph-icon" textAlignment="RIGHT" wrappingWidth="174.0" />
+                                 </children>
+                              </VBox>
+                           </children>
                         </StackPane>
                      </children>
                      <padding>

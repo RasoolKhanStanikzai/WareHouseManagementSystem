@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 package Product;
-
+import DataValidations.TextFieldValidations;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -85,6 +85,13 @@ public class ProductFXMLController implements Initializable {
     @FXML
     private void saveRecord(){
         if(btnSaveAndUpdate.getText().equals("Save")){
+            boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtProductName,comboCategory,txtUnitPrice,txtSalePrice,
+                    txtCostPrice,comboCurrency);
+            if(!isEmpty){
+                lblNotification.getStyleClass().add("notification-warnning");
+                ControlHelper.showNotification(lblNotification, "Required");
+                return ;
+            }
             String query="insert into Product(Name,CategoryID,Unit,CostPrice,SalePrice,CurrencyID,CreatedBy)values(?,?,?,?,?,?,?)";
              int insertedProductId=operation.getInsertAndUpdateID(query, txtProductName.getText(),selectedComboCategoryID,txtUnitPrice.getText(),
                 txtCostPrice.getText(),txtSalePrice.getText(),selectedComboCurrencyID,currentUser.getUserID());

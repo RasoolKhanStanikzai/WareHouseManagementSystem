@@ -31,14 +31,14 @@
       <VBox layoutX="180.0" layoutY="60.0" prefHeight="244.0" prefWidth="241.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="80.0">
          <children>
             <TextField fx:id="txtProductName" promptText="Product Name" styleClass="form-control" />
-            <ComboBox fx:id="comboCategory" prefHeight="25.0" prefWidth="250.0" promptText="Select Category" />
+            <ComboBox fx:id="comboCategory" prefHeight="25.0" prefWidth="250.0" promptText="Select Category" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
             <TextField fx:id="txtUnitPrice" promptText="Unit Price" styleClass="form-control" />
             <TextField fx:id="txtCostPrice" layoutX="10.0" layoutY="80.0" promptText="Cost Price" styleClass="form-control" />
             <TextField fx:id="txtSalePrice" layoutX="10.0" layoutY="115.0" promptText="Sale Price" styleClass="form-control" />
-            <ComboBox fx:id="comboCurrency" prefHeight="25.0" prefWidth="252.0" promptText="Select Currency" />
+            <ComboBox fx:id="comboCurrency" prefHeight="25.0" prefWidth="252.0" promptText="Select Currency" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
          </children></VBox>
       <Label fx:id="lblNotification" layoutX="558.0" layoutY="14.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-      <HBox layoutX="180.0" layoutY="324.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="324.0">
+      <HBox layoutX="180.0" layoutY="339.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="339.0">
          <children>
             <JFXButton fx:id="btnSaveAndUpdate" buttonType="RAISED" onAction="#saveRecord" styleClass="btn" text="Save">
                <cursor>

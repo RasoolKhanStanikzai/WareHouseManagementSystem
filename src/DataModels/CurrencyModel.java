@@ -23,7 +23,11 @@ public class CurrencyModel {
     private String updateBy;
     private Timestamp deletedAt;
     private String deletedBy;
-
+    
+    public CurrencyModel(int id,String name){
+        this.id=id;
+        this.name=name;
+    }
     public CurrencyModel(int id, String code, String name, String symbol, String country, int dp, String status, double rate) {
         this.id = id;
         this.code = code;

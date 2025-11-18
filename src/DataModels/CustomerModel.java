@@ -11,7 +11,11 @@ package DataModels;
 public class CustomerModel {
     private int customerID;
     private String customerName,customerPhone,customerEmail,customerAddress;
-
+    
+    public CustomerModel(int customerID,String customerName){
+        this.customerID=customerID;
+        this.customerName=customerName;
+    }
     public CustomerModel(int customerID, String customerName, String customerPhone, String customerEmail, String customerAddress) {
         this.customerID = customerID;
         this.customerName = customerName;
@@ -58,5 +62,10 @@ public class CustomerModel {
 
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
+    }
+    
+    @Override
+    public String toString(){
+        return customerName;
     }
 }

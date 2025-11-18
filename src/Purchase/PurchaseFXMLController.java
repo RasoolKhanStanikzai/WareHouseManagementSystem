@@ -18,7 +18,9 @@ import DataModels.CurrencyModel;
 import DataModels.DashboardModel;
 import DataModels.ProductModel;
 import DataModels.PurchaseModel;
+import DataModels.Session;
 import DataModels.SupplierModel;
+import DataModels.UserModel;
 import DatabaseOperations.CRUDOperations;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
+import DataValidations.TextFieldValidations;
 /**
  * FXML Controller class
  *
@@ -40,6 +43,7 @@ public class PurchaseFXMLController implements Initializable {
     private int selectedSupplierID;
     
     CRUDOperations operation=new CRUDOperations();
+    UserModel currentUser=Session.getCurrentUser();
     @FXML
     private ComboBox<SupplierModel> comboSupplier;
     @FXML
@@ -75,11 +79,18 @@ public class PurchaseFXMLController implements Initializable {
     @FXML
     private void saveAndUpdate(){
         if(btnSaveAndUpdate.getText().equals("Save")){
+            boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(comboSupplier,comboProduct,txtQuantity,
+                    txtPrice,comboCurrency);
+            if(!isEmpty){
+                lblNotification.getStyleClass().add("notification-warnning");
+                ControlHelper.showNotification(lblNotification, "Required");
+                return ;
+            }
             String query="insert into Purchase(SupplierID,ProductID,Quantity,"
-                    + "PricePerQuantity,CurrencyID) values(?,?,?,?,?)";
+                    + "PricePerQuantity,CurrencyID,CreatedBy) values(?,?,?,?,?,?)";
            int insertedPurchasedId=operation.getInsertAndUpdateID(query, selectedSupplierID,
                     selectedProductID,txtQuantity.getText(),txtPrice.getText(),
-           selectedCurrencyID);
+           selectedCurrencyID,currentUser.getUserID());
             
             if(insertedPurchasedId>0){
                 String stockQry="Update Stock set Quantity=Quantity+?,LastUpdated=NOW() Where ProductID=?";
@@ -109,8 +120,10 @@ public class PurchaseFXMLController implements Initializable {
     }
     private void loadSupplier(){
         String query="select SupplierID,Name from supplier where DeletedAt IS NULL";
-        ControlHelper.fillComboBox(comboSupplier, query, row->new SupplierModel((int)row.get("SupplierID"),
-        (String)row.get("Name")),supplier->supplier.getName(),supplier->selectedSupplierID=supplier.getId());
+        ControlHelper.fillComboBox(comboSupplier, query,
+                row->new SupplierModel((int)row.get("SupplierID"),
+        (String)row.get("Name")),supplier->supplier.getName(),
+        supplier->selectedSupplierID=supplier.getId());
         ControlHelper.makeComboBoxSearchable(comboSupplier);
     }
     private void loadPuchaseData(){

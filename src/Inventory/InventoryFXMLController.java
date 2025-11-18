@@ -63,11 +63,13 @@ public class InventoryFXMLController implements Initializable {
                 new Pair<>(colQuantity,"quantity"),
                 new Pair<>(colDate,"date"));
         DashboardModel.getInstance().setStockCount(totalStock);
+        ControlHelper.enableUniversalSearch(txtSearch, tblViewStock, stock);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadStock();
+       
     }    
     
 }

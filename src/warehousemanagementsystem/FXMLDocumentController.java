@@ -74,6 +74,8 @@ public class FXMLDocumentController implements Initializable {
     private Label lblTotalStock;
     @FXML
     private Label lblTotalPurchases;
+    @FXML
+    private Label lblTotalSales;
     public void hamburgerAnitmation(){
         sidebarWidth=sidebar.getPrefWidth();
         HamburgerBackArrowBasicTransition burgerTask=new HamburgerBackArrowBasicTransition(hamburger);
@@ -161,6 +163,10 @@ public class FXMLDocumentController implements Initializable {
     private void loadStockFXML(){
         loadPage("InventoryFXML");
     }
+    @FXML
+    private void loadSaleFXML(){
+        loadPage("SaleFXML");
+    }
    private void preloadPage(String name,String fxmlPath){
         try{
         FXMLLoader loader=new FXMLLoader(getClass().getResource(fxmlPath));
@@ -213,6 +219,7 @@ public class FXMLDocumentController implements Initializable {
         preloadPage("SupplierFXML","/Supplier/SupplierFXML.fxml");
         preloadPage("PurchaseFXML","/Purchase/PurchaseFXML.fxml");
         preloadPage("InventoryFXML","/Inventory/InventoryFXML.fxml");
+        preloadPage("SaleFXML","/Sale/SaleFXML.fxml");
         hamburgerAnitmation();
         dashboardCenterCentents=centerContentVBOX.getChildren().get(0);
         loadDashboardStackPanes();

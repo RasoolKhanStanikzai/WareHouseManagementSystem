@@ -396,13 +396,15 @@ public void onConverted(String value) {
         if(btnSaveAndUpdateCurrency.getText().equals("Save")){
         String query="insert into Currency(Code,Name,Symbol,Country,DecimalPlaces,Status,Rate,CreatedBy)"
                 + "values(?,?,?,?,?,?,?,?)";
-        boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtCode,txtName,txtSymbol,comboCountry,txtDP,comboStatus);
+        boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtCode,txtName,txtSymbol,comboCountry,
+                txtDP,comboStatus,txtExchangeRate);
         boolean isInserted=operations.insert(query, txtCode.getText(),txtName.getText(),
                 txtSymbol.getText(),comboCountry.getValue(),txtDP.getText(),
                 comboStatus.getValue(),txtExchangeRate.getText(),currentUser.getUserID());
         if(!isEmpty){
-            lblNotification.getStyleClass().add("notification-error");
+            lblNotification.getStyleClass().add("notification-warnning");
             ControlHelper.showNotification(lblNotification, "Required!");
+            return ;
         }
         if(isInserted){
             lblNotification.getStyleClass().add("notification-success");

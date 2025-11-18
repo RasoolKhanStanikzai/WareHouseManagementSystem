@@ -149,4 +149,23 @@ public class CRUDOperations {
         }
         return count;
     }
+    // Functional Interface
+    public interface TransactionCallback{
+        void execute(Connection conn) throws Exception;
+    }
+    // INSERTING MULTIPLE ITEMS TO THE DATABASE
+    public boolean excuteMultipleTransactions(TransactionCallback action){
+          try {
+            connect.setAutoCommit(false);
+            action.execute(connect);
+            connect.commit();
+            return true;
+            } catch (Exception ex) {
+                 try { connect.rollback(); } catch (SQLException ignored) {}
+                    ex.printStackTrace();
+                    return false;
+            } finally {
+                 try { connect.setAutoCommit(true); } catch (SQLException ignored) {}
+                }
+    }              
 }
