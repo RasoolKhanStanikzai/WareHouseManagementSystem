@@ -36,6 +36,7 @@ import ControlHelper.ControlHelper;
 import DataModels.Session;
 import DataModels.UserModel;
 import java.nio.file.Files;
+import javafx.scene.control.ComboBox;
 
 /**
  * FXML Controller class
@@ -56,7 +57,7 @@ public class UserFXMLController implements Initializable {
     @FXML
     private PasswordField txtUserPassword;
     @FXML
-    private JFXComboBox<String> txtUserRole;
+    private ComboBox<String> txtUserRole;
     @FXML
     private TextField txtUserEmail;
     @FXML

@@ -57,8 +57,8 @@ public class ProductFXMLController implements Initializable {
     @FXML
     private JFXButton btnClear;
 
-   private int selectedComboCategoryID;
-   private int selectedComboCurrencyID;
+   private int selectedComboCategoryID=0;
+   private int selectedComboCurrencyID=0;
     @FXML
     private TableView<ProductModel> tblViewProduct;
     @FXML
@@ -84,23 +84,25 @@ public class ProductFXMLController implements Initializable {
     
     @FXML
     private void saveRecord(){
-        if(btnSaveAndUpdate.getText().equals("Save")){
-            boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtProductName,comboCategory,txtUnitPrice,txtSalePrice,
+        boolean isEmpty=TextFieldValidations.isTextFieldNotEmpty(txtProductName,comboCategory,txtUnitPrice,txtSalePrice,
                     txtCostPrice,comboCurrency);
+            boolean isValidNOField=TextFieldValidations.isValidNumberField(txtCostPrice,txtSalePrice);
             if(!isEmpty){
                 lblNotification.getStyleClass().add("notification-warnning");
                 ControlHelper.showNotification(lblNotification, "Required");
                 return ;
             }
+            if(!isValidNOField){
+                lblNotification.getStyleClass().add("notification-warnning");
+                ControlHelper.showNotification(lblNotification, "Field must contain number.");
+                return ;
+            }
+        if(btnSaveAndUpdate.getText().equals("Save")){
             String query="insert into Product(Name,CategoryID,Unit,CostPrice,SalePrice,CurrencyID,CreatedBy)values(?,?,?,?,?,?,?)";
              int insertedProductId=operation.getInsertAndUpdateID(query, txtProductName.getText(),selectedComboCategoryID,txtUnitPrice.getText(),
                 txtCostPrice.getText(),txtSalePrice.getText(),selectedComboCurrencyID,currentUser.getUserID());
              
              if(insertedProductId>0){
-//                 String queryStock="insert into Stock(ProductID,Quantity,LastUpdated) "
-//                         + "values(?,0,NOW())";
-//                 operation.insert(queryStock, insertedProductId);
-
                  lblNotification.getStyleClass().add("notification-success");
                  ControlHelper.showNotification(lblNotification, "Product Added");
                  ControlHelper.clearFaileds(txtProductName, comboCategory, txtUnitPrice, txtCostPrice, txtSalePrice, comboCurrency);
@@ -111,6 +113,7 @@ public class ProductFXMLController implements Initializable {
              }
         }
         else{
+            
             String query="update Product set Name=?,CategoryID=?,Unit=?,CostPrice=?,SalePrice=?,CurrencyID=?,UpdatedBy=?,UpdatedAt=NOW() Where ProductID=?";
             operation.update(query, txtProductName.getText(),selectedComboCategoryID,
                     txtUnitPrice.getText(),txtCostPrice.getText(),txtSalePrice.getText(),selectedComboCurrencyID,currentUser.getUserID()

@@ -207,6 +207,8 @@ public class FXMLDocumentController implements Initializable {
      lblSupplierCount.textProperty().bind(DashboardModel.getInstance().supplierCountProperty().asString());
      lblTotalStock.textProperty().bind(DashboardModel.getInstance().stockCountProperty().asString());
      lblTotalPurchases.textProperty().bind(Bindings.concat(DashboardModel.getInstance().purchaseCountProperty().asString()," AFN"));
+     lblTotalSales.textProperty().bind(Bindings.concat(DashboardModel.getInstance().salesCountProperty().asString()," AFN"));
+     
   }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

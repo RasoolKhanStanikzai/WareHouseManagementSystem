@@ -8,11 +8,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Purchase.PurchaseFXMLController">
+<AnchorPane id="AnchorPane" fx:id="txtSearch" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Purchase.PurchaseFXMLController">
    <children>
       <Label layoutX="6.0" layoutY="14.0" text="Purchase" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
@@ -62,13 +63,14 @@
       </VBox>
       <JFXButton fx:id="btnSaveAndUpdate" buttonType="RAISED" layoutX="136.0" layoutY="318.0" onAction="#saveAndUpdate" prefHeight="30.0" prefWidth="84.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Save" />
       <Line endX="-100.0" endY="300.0" layoutX="464.0" layoutY="87.0" opacity="0.5" startX="-100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="80.0" />
-      <TableView fx:id="tblViewPurchase" layoutX="380.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
+      <TableView fx:id="tblViewPurchase" layoutX="380.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
         <columns>
           <TableColumn fx:id="colPurchaseID" prefWidth="75.0" text="Purchase ID" />
           <TableColumn fx:id="colSupplier" prefWidth="75.0" text="Supplier" />
             <TableColumn fx:id="colProduct" prefWidth="75.0" text="Product" />
             <TableColumn fx:id="colQuantity" prefWidth="75.0" text="Quantity" />
             <TableColumn fx:id="colPrice" prefWidth="75.0" text="Price per Quantity" />
+            <TableColumn fx:id="colTotalPrice" prefWidth="75.0" text="Total Price" />
             <TableColumn fx:id="colCurrency" prefWidth="75.0" text="Currency" />
             <TableColumn fx:id="colAction" prefWidth="75.0" text="Action" />
         </columns>
@@ -77,5 +79,33 @@
          </columnResizePolicy>
       </TableView>
       <Label fx:id="lblNotification" layoutX="558.0" layoutY="15.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <TextField fx:id="txtSearchPurchase" layoutX="390.0" layoutY="41.0" prefHeight="32.0" prefWidth="250.0" promptText="Search" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
+      <HBox layoutX="390.0" layoutY="373.0" prefHeight="53.0" prefWidth="240.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="337.0">
+         <children>
+            <Label text="Total Purchased Quantities:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalQuantities">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label text="Grand Total:">
+               <HBox.margin>
+                  <Insets left="150.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblGrandTotal">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

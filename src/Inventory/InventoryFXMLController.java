@@ -11,6 +11,7 @@ import DatabaseOperations.CRUDOperations;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -18,9 +19,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 /**
@@ -44,11 +47,23 @@ public class InventoryFXMLController implements Initializable {
     private TextField txtSearch;
     @FXML
     private JFXButton btnRefresh;
+    @FXML
+    private Label lblNotification;
+    @FXML
+    private VBox vboxLowStock;
+    @FXML
+    private TableView<StockModel> tblViewLowStock;
+    @FXML
+    private TableColumn<?, ?> lowStockPName;
+    @FXML
+    private TableColumn<?, ?> lowStockPQuantity;
 
     
     private void loadStock(){
-        String query="select s.StockID,p.Name as ProductName,s.Quantity,s.LastUpdated from Stock s JOIN Product p ON s.ProductID=p.ProductID";
+        String query="select s.StockID,p.Name as ProductName,s.Quantity,s.LastUpdated from Stock s "
+                + "JOIN Product p ON s.ProductID=p.ProductID";
         List<Map<String,Object>> data=operation.retrieve(query);
+        //List<String> lowStockProduct=new ArrayList<>();
         ObservableList<StockModel> stock=FXCollections.observableArrayList();
         int totalStock=0;
         for(Map<String,Object> row:data){
@@ -58,17 +73,38 @@ public class InventoryFXMLController implements Initializable {
             row.get("ProductName").toString(),
             Integer.parseInt(row.get("Quantity").toString()),
             (LocalDateTime)row.get("LastUpdated")));
-            
+       
         }
         tblViewStock.setItems(stock);
+        loadLowStock(stock);
         ControlHelper.setColumnsFactory(new Pair<>(colID,"id"),
                 new Pair<>(colProductName,"name"),
                 new Pair<>(colQuantity,"quantity"),
                 new Pair<>(colDate,"date"));
         DashboardModel.getInstance().setStockCount(totalStock);
         ControlHelper.enableUniversalSearch(txtSearch, tblViewStock, stock);
+        
     }
-    
+    private void loadLowStock(ObservableList<StockModel> allStockData){
+        ObservableList<StockModel> lowStockList=FXCollections.observableArrayList();
+        List<String> lowStockProduct=new ArrayList<>();
+        for(StockModel item:allStockData){
+            if(item.getQuantity()<10){
+                lowStockList.add(item);
+                lowStockProduct.add(item.getName() + "(" + item.getQuantity() + ")");
+                vboxLowStock.setVisible(true);
+            }
+        }
+        if(!lowStockProduct.isEmpty()){
+            lblNotification.getStyleClass().add("notification-warnning");
+            ControlHelper.showNotification(lblNotification, "Low Stock: "+String.join(",", lowStockProduct));
+            
+        }
+        
+        tblViewLowStock.setItems(lowStockList);
+        ControlHelper.setColumnsFactory(new Pair<>(lowStockPName,"name"),
+                new Pair<>(lowStockPQuantity,"quantity"));
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadStock();

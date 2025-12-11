@@ -32,7 +32,7 @@
          <children>
             <TextField fx:id="txtProductName" promptText="Product Name" styleClass="form-control" />
             <ComboBox fx:id="comboCategory" prefHeight="25.0" prefWidth="250.0" promptText="Select Category" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
-            <TextField fx:id="txtUnitPrice" promptText="Unit Price" styleClass="form-control" />
+            <TextField fx:id="txtUnitPrice" promptText="Unit (Like Kg, PCS)" styleClass="form-control" />
             <TextField fx:id="txtCostPrice" layoutX="10.0" layoutY="80.0" promptText="Cost Price" styleClass="form-control" />
             <TextField fx:id="txtSalePrice" layoutX="10.0" layoutY="115.0" promptText="Sale Price" styleClass="form-control" />
             <ComboBox fx:id="comboCurrency" prefHeight="25.0" prefWidth="252.0" promptText="Select Currency" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
@@ -64,7 +64,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="10.0" layoutY="40.0" text="Unit Price:">
+            <Label layoutX="10.0" layoutY="40.0" text="Unit:">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

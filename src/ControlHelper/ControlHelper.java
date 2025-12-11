@@ -22,13 +22,14 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import DatabaseOperations.CRUDOperations;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
+import javafx.beans.binding.ObjectBinding;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
 
@@ -258,8 +259,21 @@ public class ControlHelper {
     });
     }
     
-    // Intege Binding for total Sum
+    // Intege Binding for total Sum on lables 
     public static <T> IntegerBinding totalSum(ObservableList<T> list,ToIntFunction<T> valueExtractor){
         return Bindings.createIntegerBinding(()->list.stream().mapToInt(valueExtractor).sum(),list);
     }
+    // Integer Binding for total Su on lables for the current item in the table
+    public static <T> IntegerBinding totalSum(TableView<T> table,ToIntFunction<T> valueExtractor){
+        return Bindings.createIntegerBinding(()->table.getItems().stream().mapToInt(valueExtractor).sum(),table.getItems());
+    }
+    //Object Binding for total Sum on lables
+    public static<T> ObjectBinding<BigDecimal> totalSum(ObservableList<T> list,Function<T,BigDecimal> valueExtractor){
+        return Bindings.createObjectBinding(()->list.stream().map(valueExtractor).reduce(BigDecimal.ZERO,BigDecimal::add),list);
+    }
+    //Object Binding for total Sum on lables for the current item in the table
+    public static<T> ObjectBinding<BigDecimal> totalSum(TableView<T> table,Function<T,BigDecimal> valueExtratctor){
+        return Bindings.createObjectBinding(()->table.getItems().stream().map(valueExtratctor).reduce(BigDecimal.ZERO, BigDecimal::add),table.getItems());
+    }
+    
 }

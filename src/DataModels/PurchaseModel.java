@@ -13,7 +13,7 @@ import java.security.Timestamp;
 public class PurchaseModel {
     private int purchaseId;
     private String supplierName,productName;
-    private int quantity,price;
+    private int quantity,price,totalPrice;
     private String currencyName;
     private Timestamp createdAt;
     private String createdBy;
@@ -22,12 +22,13 @@ public class PurchaseModel {
     private Timestamp deletedAt;
     private String deletedBy;
 
-    public PurchaseModel(int purchaseId, String supplierName, String productName, int quantity, int price, String currencyName) {
+    public PurchaseModel(int purchaseId, String supplierName, String productName, int quantity, int price, int totalPrice,String currencyName) {
         this.purchaseId = purchaseId;
         this.supplierName = supplierName;
         this.productName = productName;
         this.quantity = quantity;
         this.price = price;
+        this.totalPrice=totalPrice;
         this.currencyName = currencyName;
     }
 
@@ -140,6 +141,14 @@ public class PurchaseModel {
 
     public void setDeletedBy(String deletedBy) {
         this.deletedBy = deletedBy;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
     
     

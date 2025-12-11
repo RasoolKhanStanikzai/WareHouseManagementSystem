@@ -25,8 +25,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 import DataValidations.TextFieldValidations;
+import java.math.BigDecimal;
 import javafx.scene.control.Alert;
-import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 /**
  * FXML Controller class
  *
@@ -34,11 +45,13 @@ import java.sql.Connection;
  */
 public class SaleFXMLController implements Initializable {
     UserModel currentUser=Session.getCurrentUser();
-    private int selectedCustomerID;
-    private int selectedProductID;
-    private int selectedCurrencyID;
+    private int selectedCustomerID=0;
+    private int selectedProductID=0;
+    private int selectedCurrencyID=0;
+    private int selectedPurchaseID=0;
     private final ReadOnlyIntegerWrapper totalQuantity=new ReadOnlyIntegerWrapper();
     private final ReadOnlyIntegerWrapper totalSale=new ReadOnlyIntegerWrapper();
+    private final ReadOnlyIntegerWrapper saleGrandTotal=new ReadOnlyIntegerWrapper();
     CRUDOperations operation=new CRUDOperations();
     ObservableList<SaleCartModel> cartList=FXCollections.observableArrayList();
     @FXML
@@ -77,6 +90,14 @@ public class SaleFXMLController implements Initializable {
     private Label lblTotalSales;
     @FXML
     private Label lblNotification;
+    @FXML
+    private JFXButton btnRemoveAll;
+    @FXML
+    private JFXButton btnSale;
+    @FXML
+    private JFXButton btnSaleView;
+    @FXML
+    private JFXButton btnPrint;
 
     private void loadCustomer(){
         String query="select CustomerID,Name from customer Where DeletedAt IS NULL";
@@ -97,15 +118,19 @@ public class SaleFXMLController implements Initializable {
             ProductModel selectedProduct=comboProduct.getSelectionModel().getSelectedItem();
             if(selectedProduct!=null){
                 selectedProductID=selectedProduct.getId();
-                String purchaseQuery="select PricePerQuantity from Purchase where ProductID=?";
+                //String purchaseQuery="select PricePerQuantity from Purchase where ProductID=?";
+                String purchaseQuery="Select PurchaseID,PricePerQuantity from Purchase Where ProductID=? order by PurchaseID Desc Limit 1";
                 var data=operation.retrieve(purchaseQuery, selectedProductID);
                 
                 if(data!=null && !data.isEmpty()){
-                    String purchasePrice=data.get(0).get("PricePerQuantity").toString();
-                    txtPurchasePrice.setText(purchasePrice);
+                    selectedPurchaseID=(int) data.get(0).get("PurchaseID");
+                    //String purchasePrice=data.get(0).get("PricePerQuantity").toString();
+                    int purchasePrice=Integer.parseInt(data.get(0).get("PricePerQuantity").toString());
+                    txtPurchasePrice.setText(String.valueOf(purchasePrice));
      
                 } else{
                     txtPurchasePrice.setText("");
+                    selectedPurchaseID=0;
                 }
             }
         });
@@ -130,6 +155,13 @@ public class SaleFXMLController implements Initializable {
         ProductModel product=comboProduct.getSelectionModel().getSelectedItem();
         int quantity=Integer.parseInt(txtQuantity.getText());
         int stockQty=getStockQuantity(product.getId());
+        int purchasePrice=Integer.parseInt(txtPurchasePrice.getText());
+        int salePrice=Integer.parseInt(txtSalePrice.getText());
+        if(salePrice<purchasePrice){
+            lblNotification.getStyleClass().add("notification-warnning");
+            ControlHelper.showNotification(lblNotification, "Sale Price should not be less then Purchase Price!");
+            return ;
+        }
         if(quantity>stockQty){
             lblNotification.getStyleClass().add("notification-warnning");
             ControlHelper.showNotification(lblNotification, "Only "+stockQty+" quantity avaiable in stock!");
@@ -139,12 +171,13 @@ public class SaleFXMLController implements Initializable {
         
         CurrencyModel currency=comboCurrency.getSelectionModel().getSelectedItem();
         
-        int purchasePrice=Integer.parseInt(txtPurchasePrice.getText());
-        int salePrice=Integer.parseInt(txtSalePrice.getText());
        // int quantity=Integer.parseInt(txtQuantity.getText());
-        SaleCartModel item=new SaleCartModel(customer.getCustomerID(),
+        SaleCartModel item=new SaleCartModel(
+         customer.getCustomerID(),
         customer.getCustomerName(),
-        product.getId(),product.getName(),purchasePrice,salePrice,quantity,
+        product.getId(),product.getName(),
+        selectedPurchaseID,
+        purchasePrice,salePrice,quantity,
         currency.getId(),currency.getName());
         cartList.add(item);
         tblViewCart.setItems(cartList);
@@ -152,7 +185,8 @@ public class SaleFXMLController implements Initializable {
                 txtPurchasePrice,txtSalePrice,txtQuantity);
         comboCustomer.setDisable(true);
         comboCurrency.setDisable(true);
-        
+        btnRemoveAll.setDisable(false);
+        btnSale.setDisable(false);
     }
     private void setupCartTable(){
         colItem.setCellFactory(col->new TableCell<SaleCartModel,Void>(){
@@ -190,6 +224,7 @@ public class SaleFXMLController implements Initializable {
                     btnRemove.setOnAction(event->{
                         SaleCartModel list=getTableView().getItems().get(getIndex());
                         getTableView().getItems().remove(list);
+                        emptyCartList();
                     });
                 }
             @Override
@@ -214,6 +249,8 @@ public class SaleFXMLController implements Initializable {
                 txtPurchasePrice,txtSalePrice,txtQuantity);
         comboCustomer.setDisable(false);
         comboCurrency.setDisable(false);
+        btnRemoveAll.setDisable(true);
+        btnSale.setDisable(true);
         }
     }
     private int getStockQuantity(int productId){
@@ -232,6 +269,10 @@ public class SaleFXMLController implements Initializable {
             return ;
         }
         boolean success=operation.excuteMultipleTransactions(conn->{
+            int totalAmount=cartList.stream().mapToInt(item->item.getTotalPrice()).sum();
+            String invoiceQry="insert into Invoice(CustomerID, InvoiceDate, TotalAmount, CreatedAt, CreatedBy) VALUES (?, NOW(), ?, NOW(), ?)";
+            int invoiceId=operation.getInsertAndUpdateID(invoiceQry, selectedCustomerID,totalAmount,currentUser.getUserID());
+            
             for(SaleCartModel item:cartList){
                 int stockQty=getStockQuantity(item.getProductID());
                 if(item.getQuantity()>stockQty){
@@ -239,11 +280,13 @@ public class SaleFXMLController implements Initializable {
                     ControlHelper.showNotification(lblNotification, "Only "+stockQty+" quantity available in stock!");
                     return ;
                 }
-                String query="insert into Sale (CustomerID,ProductID,Quantity,PricePerUnit,CurrencyID,CreatedAt,CreatedBy) values(?,?,?,?,?,NOW(),?)";
+                String query="insert into Sale (InvoiceId,CustomerID,ProductID,Quantity,PurchaseID,PricePerUnit,CurrencyID,CreatedAt,CreatedBy) values(?,?,?,?,?,?,?,NOW(),?)";
                 operation.insert(query,
+                        invoiceId,
                        item.getCustomerID(),
                        item.getProductID(),
                        item.getQuantity(),
+                       item.getPurchaseID(),
                        item.getSalePrice(),
                        item.getCurrencyID(),
                        currentUser.getUserID());
@@ -251,6 +294,10 @@ public class SaleFXMLController implements Initializable {
                 operation.update(updateQuery,
                         item.getQuantity(),
                         item.getProductID());
+            }
+            boolean confirmInvoice=ControlHelper.showAlertMessage("Print Invoice", Alert.AlertType.CONFIRMATION);
+            if(confirmInvoice){
+                printCustomerInvoice(invoiceId);
             }
         });
         if(success){
@@ -260,7 +307,63 @@ public class SaleFXMLController implements Initializable {
             tblViewCart.refresh();
             comboCustomer.setDisable(false);
             comboCurrency.setDisable(false);
+            btnRemoveAll.setDisable(true);
+            btnSale.setDisable(true);
+            ControlHelper.clearFaileds(comboProduct,
+                txtPurchasePrice,txtSalePrice,txtQuantity,txtPurchasePrice);
         }
+    }
+    private void emptyCartList(){
+        if(cartList.isEmpty() || cartList.size()<=0){
+            btnSale.setDisable(true);
+            btnRemoveAll.setDisable(true);
+        } 
+    }
+    @FXML
+    private void loadViewSaleFXML(){
+        try{
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/Sale/ViewSale/ViewSaleFXML.fxml"));
+        Parent root=loader.load();
+        Stage mainStage=new Stage();
+        Scene scene=new Scene(root);
+        mainStage.setMaximized(true);
+        mainStage.setTitle("View Sales");
+        mainStage.setScene(scene);
+       // Stage currentStage=(Stage)btnSaleView.getScene().getWindow();
+        mainStage.show();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    private void loadSaleGrandTotal(){
+        String query="select SUM(PricePerUnit) as TotalSales from Sale";
+        List<Map<String,Object>> data=operation.retrieve(query);
+        int total=0;
+        if(data!=null && !data.isEmpty() && data.get(0).get("TotalSales")!=null){
+            total=Integer.parseInt(data.get(0).get("TotalSales").toString());
+        }
+        DashboardModel.getInstance().setSalesCount(total);
+    }
+    @FXML
+    private void printInvoice() throws Exception{
+             JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(cartList);
+             Map<String,Object> parameters=new HashMap<>();
+             parameters.put("invoiceNumber", System.currentTimeMillis());
+             parameters.put("customerName", comboCustomer.getValue().getCustomerName());
+             parameters.put("ReportDataSource", cartList);
+             
+             JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/CartItemInvoice.jasper"),parameters,dataSource);
+             JasperViewer.viewReport(print,false);
+    }
+    private void printCustomerInvoice(int invoiceId)throws Exception{
+        JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(cartList);
+             Map<String,Object> parameters=new HashMap<>();
+             parameters.put("invoiceNumber", invoiceId);
+             parameters.put("customerName", comboCustomer.getValue().getCustomerName());
+             parameters.put("ReportDataSource", cartList);
+             
+             JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/CartItemInvoice.jasper"),parameters,dataSource);
+             JasperViewer.viewReport(print,false);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -269,9 +372,11 @@ public class SaleFXMLController implements Initializable {
         loadCurrency();
         setupCartTable();
         totalOfQuanttyAndSale();
+        loadSaleGrandTotal();
         lblTotalItems.textProperty().bind(totalQuantity.asString());
         lblTotalSales.textProperty().bind(totalSale.asString());
         removeItem();
+        emptyCartList();
     }    
     
 }

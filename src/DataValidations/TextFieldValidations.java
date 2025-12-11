@@ -46,13 +46,22 @@ public class TextFieldValidations {
             if(check.matches(".*\\d.*")){
                 fields.setStyle("-fx-border-color:red;");
                 return false;
-            }
-            
+            }   
         }
         return true;
         
     }
-    
+    // Validating Number Field 
+    public static boolean isValidNumberField(TextField...txt){
+        for(TextField field:txt){
+            String check=field.getText();
+            if(!check.matches(".*\\d.*")){
+                field.setStyle("-fx-border-color:red;");
+                return false;
+            }
+        }
+        return true;
+    }
     // Validating Email Fields
     public static boolean validateEmail(TextField...txt){
         boolean isValid=true;

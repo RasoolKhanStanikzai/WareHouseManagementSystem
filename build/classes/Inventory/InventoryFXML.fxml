@@ -6,16 +6,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Inventory.InventoryFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="527.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Inventory.InventoryFXMLController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Invenory/Stock Management" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="tblViewStock" layoutX="10.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="90.0">
+      <TableView fx:id="tblViewStock" layoutX="10.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
         <columns>
           <TableColumn fx:id="colID" prefWidth="75.0" text="Stock ID" />
           <TableColumn fx:id="colProductName" prefWidth="75.0" text="Product Name" />
@@ -26,8 +27,27 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField fx:id="txtSearch" layoutX="14.0" layoutY="45.0" prefHeight="36.0" prefWidth="362.0" promptText="Search Product " styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0" />
+      <TextField fx:id="txtSearch" layoutX="14.0" layoutY="45.0" prefHeight="36.0" prefWidth="362.0" promptText="Search Product " styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="60.0" />
       <Label layoutX="558.0" layoutY="15.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-      <JFXButton fx:id="btnRefresh" buttonType="RAISED" layoutX="392.0" layoutY="45.0" prefHeight="36.0" prefWidth="80.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Refresh" />
+      <JFXButton fx:id="btnRefresh" buttonType="RAISED" layoutX="392.0" layoutY="45.0" prefHeight="36.0" prefWidth="80.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Refresh" AnchorPane.topAnchor="60.0" />
+      <Label fx:id="lblNotification" layoutX="536.0" layoutY="22.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <VBox fx:id="vboxLowStock" layoutX="14.0" layoutY="384.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="400.0">
+         <children>
+            <Label text="Low Stock Products" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tblViewLowStock" styleClass="table" stylesheets="@../StyleingCSS/StyleCSS.css">
+              <columns>
+                <TableColumn fx:id="lowStockPName" prefWidth="75.0" text="Product Name" />
+                <TableColumn fx:id="lowStockPQuantity" prefWidth="75.0" text="Available Quantity" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

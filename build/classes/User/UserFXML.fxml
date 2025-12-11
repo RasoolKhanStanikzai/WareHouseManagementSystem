@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -19,26 +19,55 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <VBox layoutX="14.0" layoutY="55.0" prefHeight="192.0" prefWidth="322.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+      <VBox layoutX="126.0" layoutY="55.0" prefHeight="193.0" prefWidth="297.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="126.0">
          <children>
             <TextField fx:id="txtUserName" promptText="User Name" styleClass="form-control" />
             <TextField fx:id="txtUserFullName" layoutX="10.0" layoutY="10.0" promptText="User Full Name" styleClass="form-control" />
             <PasswordField fx:id="txtUserPassword" promptText="User Password" styleClass="form-control" />
-            <JFXComboBox fx:id="txtUserRole" prefHeight="25.0" prefWidth="330.0" promptText="User Role" styleClass="action-btn" />
+            <ComboBox fx:id="txtUserRole" prefHeight="34.0" prefWidth="298.0" promptText="User Role" styleClass="form-control" stylesheets="@../StyleingCSS/StyleCSS.css" />
             <TextField fx:id="txtUserEmail" promptText="User Email" styleClass="form-control" />
          </children>
       </VBox>
-      <HBox layoutX="14.0" layoutY="276.0" prefHeight="40.0" prefWidth="322.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+      <HBox layoutX="126.0" layoutY="270.0" prefHeight="40.0" prefWidth="297.0" spacing="10.0" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="126.0">
          <children>
             <JFXButton fx:id="btnSaveUser" buttonType="RAISED" onAction="#saveUser" prefHeight="30.0" prefWidth="74.0" styleClass="btn" text="Save" />
          </children>
       </HBox>
-      <JFXButton fx:id="btnBrowse" buttonType="RAISED" layoutX="341.0" layoutY="227.0" onAction="#browseImage" prefHeight="30.0" prefWidth="141.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Browse" AnchorPane.leftAnchor="341.0" />
-      <StackPane layoutX="336.0" layoutY="55.0" prefHeight="150.0" prefWidth="147.0" styleClass="profile-pic" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.topAnchor="55.0">
+      <JFXButton fx:id="btnBrowse" buttonType="RAISED" layoutX="439.0" layoutY="227.0" onAction="#browseImage" prefHeight="30.0" prefWidth="141.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Browse" AnchorPane.leftAnchor="439.0" />
+      <StackPane layoutX="431.0" layoutY="50.0" prefHeight="150.0" prefWidth="147.0" styleClass="profile-pic" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.topAnchor="50.0">
          <children>
             <ImageView fx:id="imageViewUser" fitHeight="152.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </StackPane>
       <Label fx:id="lblNotification" layoutX="450.0" layoutY="15.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <VBox layoutX="14.0" layoutY="52.0" prefHeight="193.0" prefWidth="104.0" spacing="23.0">
+         <children>
+            <Label text="Name:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="10.0" text="Full Name:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="45.0" text="Password:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="80.0" text="Role:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="115.0" text="Email Address:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

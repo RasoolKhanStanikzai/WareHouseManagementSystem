@@ -9,17 +9,20 @@ public class SaleCartModel {
     private String customerName;
     private int productID;
     private String productName;
+    private int purchaseID;
     private int purchasePrice;
     private int salePrice;
     private int quantity;
     private int currencyID;
     private String currencyName;
+    private int invoiceNumber;
 
-    public SaleCartModel(int customerID, String customerName, int productID, String productName, int purchasePrice, int salePrice, int quantity, int currencyID, String currencyName) {
+    public SaleCartModel(int customerID, String customerName, int productID, String productName, int purchaseID, int purchasePrice, int salePrice, int quantity, int currencyID, String currencyName) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.productID = productID;
         this.productName = productName;
+        this.purchaseID = purchaseID;
         this.purchasePrice = purchasePrice;
         this.salePrice = salePrice;
         this.quantity = quantity;
@@ -57,6 +60,14 @@ public class SaleCartModel {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public int getPurchaseID() {
+        return purchaseID;
+    }
+
+    public void setPurchaseID(int purchaseID) {
+        this.purchaseID = purchaseID;
     }
 
     public int getPurchasePrice() {
@@ -98,10 +109,18 @@ public class SaleCartModel {
     public void setCurrencyName(String currencyName) {
         this.currencyName = currencyName;
     }
+    
+    public int getTotalPrice(){
+        return quantity*salePrice;
+    }
 
+    public int getInvoiceNumber() {
+        return invoiceNumber;
+    }
 
+    public void setInvoiceNumber(int invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
 
-
-   
     
 }

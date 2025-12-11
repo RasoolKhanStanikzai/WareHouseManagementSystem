@@ -32,18 +32,20 @@ import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 import DataValidations.TextFieldValidations;
+import javafx.beans.binding.IntegerBinding;
 /**
  * FXML Controller class
  *
  * @author Rasookhan
  */
 public class PurchaseFXMLController implements Initializable {
-    private int selectedProductID;
-    private int selectedCurrencyID;
-    private int selectedSupplierID;
+    private int selectedProductID=0;
+    private int selectedCurrencyID=0;
+    private int selectedSupplierID=0;
     
     CRUDOperations operation=new CRUDOperations();
     UserModel currentUser=Session.getCurrentUser();
+    ObservableList<PurchaseModel> purchase=FXCollections.observableArrayList();
     @FXML
     private ComboBox<SupplierModel> comboSupplier;
     @FXML
@@ -74,6 +76,15 @@ public class PurchaseFXMLController implements Initializable {
     private TableColumn<PurchaseModel, Void> colAction;
     @FXML
     private Label lblNotification;
+    @FXML
+    private TableColumn<?, ?> colTotalPrice;
+    @FXML
+    private TextField txtSearchPurchase;
+    @FXML
+    private Label lblTotalQuantities;
+    @FXML
+    private Label lblGrandTotal;
+
 
    
     @FXML
@@ -88,23 +99,30 @@ public class PurchaseFXMLController implements Initializable {
             }
             String query="insert into Purchase(SupplierID,ProductID,Quantity,"
                     + "PricePerQuantity,CurrencyID,CreatedBy) values(?,?,?,?,?,?)";
+           int qty=Integer.parseInt(txtQuantity.getText());
+           int price=Integer.parseInt(txtPrice.getText());
            int insertedPurchasedId=operation.getInsertAndUpdateID(query, selectedSupplierID,
-                    selectedProductID,txtQuantity.getText(),txtPrice.getText(),
-           selectedCurrencyID,currentUser.getUserID());
-            
-            if(insertedPurchasedId>0){
-                String stockQry="insert into stock (ProductID,Quantity,LastUpdated) values(?,?,NOW()) ON Duplicate Key Update Quantity=Quantity+Values(Quantity),LastUpdated=NOW()";
-                operation.update(stockQry, selectedProductID,txtQuantity.getText());
-                lblNotification.getStyleClass().add("notification-success");
-                ControlHelper.showNotification(lblNotification, "Product Purchased Successfully");
-                loadPuchaseData();
-                ControlHelper.clearFaileds(comboSupplier,comboProduct,txtQuantity,txtPrice,comboCurrency);
-            } else{
-                ControlHelper.showNotification(lblNotification, "Purchase Failed");
-            }
-            
-        }
-        
+                    selectedProductID,qty,price,
+           selectedCurrencyID,currentUser.getUserID());  
+           
+           if(insertedPurchasedId<=0){
+               lblNotification.getStyleClass().setAll("notification-warnning");
+               ControlHelper.showNotification(lblNotification, "Purchase Failed");
+               return ;
+           }
+           String stockQuery="insert into Stock(ProductID,Quantity,LastUpdated) values(?,?,NOW()) ON DUPLICATE KEY UPDATE Quantity=Quantity+VALUES(Quantity),LastUpdated=NOW()";
+           boolean stockUpdated=operation.update(stockQuery, selectedProductID,qty);
+           if(!stockUpdated){
+               lblNotification.getStyleClass().setAll("Purchase saved, But stock not updated");
+               return ;
+           }
+           // if success
+           purchase.clear();
+           loadPuchaseData();
+           ControlHelper.clearFaileds(comboSupplier,comboProduct,txtQuantity,txtPrice,comboCurrency);   
+           lblNotification.getStyleClass().add("notification-success");
+           ControlHelper.showNotification(lblNotification, "Product purchaed Successfully.");
+        } 
     }
     private void loadProductComboBox(){
         String query="select ProductID,Name from Product where DeletedAt IS NULL";
@@ -129,19 +147,20 @@ public class PurchaseFXMLController implements Initializable {
         ControlHelper.makeComboBoxSearchable(comboSupplier);
     }
     private void loadPuchaseData(){
-        String query="Select pur.PurchaseID,S.Name as SupplierName,P.Name as ProductName,pur.Quantity,pur.PricePerQuantity,cu.Name as CurrencyName "
+        String query="Select pur.PurchaseID,S.Name as SupplierName,P.Name as ProductName,pur.Quantity,pur.PricePerQuantity,(pur.Quantity*pur.PricePerQuantity) as TotalPrice,cu.Name as CurrencyName "
                 + "from purchase pur JOIN supplier s ON pur.SupplierID=s.SupplierID JOIN product p ON pur.ProductID=p.ProductID JOIN currency cu ON pur.CurrencyID=cu.CurrencyID where pur.DeletedAt IS NULL";
         List<Map<String,Object>> data=operation.retrieve(query);
-        ObservableList<PurchaseModel> purchase=FXCollections.observableArrayList();
         int totalPurchases=0;
         for(Map<String,Object> row:data){
+            int quantity=Integer.parseInt(row.get("Quantity").toString());
             int purchases=Integer.parseInt(row.get("PricePerQuantity").toString());
-            totalPurchases+=purchases;
+            totalPurchases+=quantity*purchases;
             purchase.add(new PurchaseModel(Integer.parseInt(row.get("PurchaseID").toString()),
             row.get("SupplierName").toString(),
             row.get("ProductName").toString(),
             Integer.parseInt(row.get("Quantity").toString()),
             Integer.parseInt(row.get("PricePerQuantity").toString()),
+            Integer.parseInt(row.get("TotalPrice").toString()),
             row.get("CurrencyName").toString()));
         }
         tblViewPurchase.setItems(purchase);
@@ -150,8 +169,10 @@ public class PurchaseFXMLController implements Initializable {
                 new Pair<>(colProduct,"productName"),
                 new Pair<>(colQuantity,"quantity"),
                 new Pair<>(colPrice,"price"),
+                new Pair<>(colTotalPrice,"totalPrice"),
                 new Pair<>(colCurrency,"currencyName"));
         DashboardModel.getInstance().setPurchaseCount(totalPurchases);
+        ControlHelper.enableUniversalSearch(txtSearchPurchase, tblViewPurchase, purchase);
         
     }
     private void loadActionButtons(){
@@ -178,6 +199,12 @@ public class PurchaseFXMLController implements Initializable {
                 }
         });
     }
+    private void calculateQtyAndSale(){
+        IntegerBinding totalQty=ControlHelper.totalSum(tblViewPurchase, PurchaseModel::getQuantity);
+        lblTotalQuantities.textProperty().bind(totalQty.asString());
+        IntegerBinding totalPurchase=ControlHelper.totalSum(tblViewPurchase, PurchaseModel::getTotalPrice);
+        lblGrandTotal.textProperty().bind(totalPurchase.asString()); 
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        loadProductComboBox();
@@ -185,6 +212,7 @@ public class PurchaseFXMLController implements Initializable {
        loadSupplier();
        loadPuchaseData();
        loadActionButtons();
+       calculateQtyAndSale();
     }    
     
 }
