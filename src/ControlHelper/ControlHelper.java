@@ -22,7 +22,11 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import DatabaseOperations.CRUDOperations;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -30,8 +34,15 @@ import java.util.function.ToIntFunction;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.ObjectBinding;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+
 
 /**
  *
@@ -276,4 +287,78 @@ public class ControlHelper {
         return Bindings.createObjectBinding(()->table.getItems().stream().map(valueExtratctor).reduce(BigDecimal.ZERO, BigDecimal::add),table.getItems());
     }
     
+    // Generic method for exporting table view data into microsoft excel
+    public static <T> void exportToExcel(TableView<T> tableView, Stage stage) {
+    // Opening file chooser
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save Excel file");
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+    File file = fileChooser.showSaveDialog(stage);
+
+    if (file != null) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+
+            Sheet sheet = workbook.createSheet("Sheet1");
+
+            // Creating header style
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font font = workbook.createFont();
+            font.setBold(true);
+            headerStyle.setFont(font);
+
+            // Header row
+            Row headerRow = sheet.createRow(0);
+            for (int col = 0; col < tableView.getColumns().size(); col++) {
+                TableColumn<T, ?> column = tableView.getColumns().get(col);
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(column.getText());
+                cell.setCellStyle(headerStyle);
+            }
+
+            // Data Rows
+            for (int rowIndex = 0; rowIndex < tableView.getItems().size(); rowIndex++) {
+                Row row = sheet.createRow(rowIndex + 1);
+                T item = tableView.getItems().get(rowIndex);
+
+                for (int col = 0; col < tableView.getColumns().size(); col++) {
+                    TableColumn<T, ?> column = tableView.getColumns().get(col);
+                    Object cellValue = column.getCellData(item);
+                    Cell cell = row.createCell(col);
+
+                    if (cellValue != null) {
+                        if (cellValue instanceof Number) {
+                            cell.setCellValue(((Number) cellValue).doubleValue());
+                        } else if (cellValue instanceof Date) {
+                            CellStyle dateStyle = workbook.createCellStyle();
+                            CreationHelper createHelper = workbook.getCreationHelper();
+                            dateStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+                            cell.setCellStyle(dateStyle);
+                            cell.setCellValue((Date) cellValue);
+                        } else {
+                            cell.setCellValue(cellValue.toString());
+                        }
+                    } else {
+                        cell.setCellValue("");
+                    }
+                }
+            }
+
+            // Auto size columns
+            for (int col = 0; col < tableView.getColumns().size(); col++) {
+                sheet.autoSizeColumn(col);
+            }
+
+            // Writing workbook to file
+            try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                workbook.write(fileOut);
+            }
+
+            System.out.println("Excel file exported successfully: " + file.getAbsolutePath());
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+ 
 }

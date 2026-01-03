@@ -309,3 +309,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-scale-y:1.05;
     -fx-cursor:hand;
 }
+/* Styling report buttons */
+.reportButton{
+     -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 6 12 6 12;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #007bff;
+}
+.reportButton:hover{
+    -fx-background-color: #0069d9;
+}

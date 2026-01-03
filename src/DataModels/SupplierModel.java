@@ -5,6 +5,7 @@
 package DataModels;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -13,11 +14,11 @@ import java.security.Timestamp;
 public class SupplierModel {
     private int id;
     private String name,phone,email,address;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private String createdBy;
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
     private String updatedBy;
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
     private String deltedBy;
 
     public SupplierModel(int id, String name) {
@@ -34,7 +35,16 @@ public class SupplierModel {
         this.address = address;
     }
 
-    public SupplierModel(int id, String name, String phone, String email, String address, Timestamp createdAt, String createdBy, Timestamp updatedAt, String updatedBy, Timestamp deletedAt, String deltedBy) {
+    public SupplierModel(int id, String name, String phone, String email, String address, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.createdAt = createdAt;
+    }
+    
+    public SupplierModel(int id, String name, String phone, String email, String address, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy, LocalDateTime deletedAt, String deltedBy) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -88,11 +98,11 @@ public class SupplierModel {
         this.address = address;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -104,11 +114,11 @@ public class SupplierModel {
         this.createdBy = createdBy;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -120,11 +130,11 @@ public class SupplierModel {
         this.updatedBy = updatedBy;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 

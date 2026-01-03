@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Report.ReportsFXMLController">
+   <children>
+      <Label layoutX="53.0" layoutY="40.0" text="Reports Center" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="10.0" layoutY="85.0" prefHeight="148.0" prefWidth="482.0" styleClass="card" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+         <children>
+            <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Master Data Reports">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <Line endX="380.0" layoutX="101.0" layoutY="27.0" opacity="0.3" startX="-100.0" />
+            <HBox layoutY="28.0" prefHeight="44.0" prefWidth="481.0" spacing="5.0">
+               <children>
+                  <JFXButton buttonType="RAISED" onAction="#viewProduct" prefHeight="30.0" prefWidth="140.0" styleClass="reportButton" stylesheets="@../StyleingCSS/StyleCSS.css" text="View All Products" textFill="#222222">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#viewCustomer" prefHeight="30.0" prefWidth="150.0" styleClass="reportButton" stylesheets="@../StyleingCSS/StyleCSS.css" text="View All Customers">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="130.0" layoutY="10.0" onAction="#viewSupplier" prefHeight="30.0" prefWidth="140.0" styleClass="reportButton" stylesheets="@../StyleingCSS/StyleCSS.css" text="View All Suppliers">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox layoutY="74.0" prefHeight="44.0" prefWidth="481.0" spacing="5.0">
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <JFXButton buttonType="RAISED" onAction="#viewCategory" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" stylesheets="@../StyleingCSS/StyleCSS.css" text="View All Categories">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="15.0" layoutY="15.0" onAction="#viewPurchase" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" stylesheets="@../StyleingCSS/StyleCSS.css" text="View All Purchases">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <Label layoutX="10.0" layoutY="58.0" text="Select a report to view or print" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="58.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Pane layoutX="10.0" layoutY="238.0" prefHeight="97.0" prefWidth="482.0" styleClass="card" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+         <children>
+            <Label text="Invoice &amp; Documents Reports">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <Line endX="367.0" layoutX="115.0" layoutY="27.0" opacity="0.3" startX="-115.0" />
+            <HBox layoutY="28.0" prefHeight="54.0" prefWidth="481.0" spacing="5.0">
+               <children>
+                  <JFXButton buttonType="RAISED" onAction="#viewSaleInvoice" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" text="Print Sale Invoice">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" text="Reprint Invoice">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="124.0" layoutY="10.0" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" text="Purchase Invoice">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </Pane>
+      <Pane layoutX="14.0" layoutY="341.0" prefHeight="100.0" prefWidth="482.0" styleClass="card" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.leftAnchor="10.0">
+         <children>
+            <Label text="Financial Summary Reports">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <Line endX="375.0" layoutX="108.0" layoutY="27.0" opacity="0.3" startX="-107.0" />
+            <HBox layoutY="28.0" prefHeight="69.0" prefWidth="481.0" spacing="5.0">
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <JFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" text="Sales Summary">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="15.0" layoutY="15.0" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" text="Purchase Summary">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="118.0" layoutY="15.0" prefHeight="30.0" prefWidth="130.0" styleClass="reportButton" text="Profit Report">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

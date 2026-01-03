@@ -122,5 +122,4 @@ public class SaleCartModel {
         this.invoiceNumber = invoiceNumber;
     }
 
-    
 }

@@ -85,7 +85,7 @@
                   <String fx:value="sidebar-btn" />
                </styleClass>
             </JFXButton>
-            <JFXButton layoutX="30.0" layoutY="210.0" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Reports">
+            <JFXButton layoutX="30.0" layoutY="210.0" onAction="#loadReportFXML" prefHeight="25.0" prefWidth="170.0" stylesheets="@../StyleingCSS/StyleCSS.css" text="Reports">
                <graphic>
                   <FontIcon iconLiteral="fas-chart-line" styleClass="glyph-icon" />
                </graphic>

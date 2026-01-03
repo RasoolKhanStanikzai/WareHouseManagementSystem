@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 public class SaleModel {
     private int saleId;
+    private int invoiceId;
     private String customerName;
     private String productName;
     private BigDecimal quantity;
@@ -22,8 +23,9 @@ public class SaleModel {
     private LocalDateTime deletedAt;
     private String deletedBy;
 
-    public SaleModel(int saleId, String customerName, String productName, BigDecimal quantity, int purchasePrice, BigDecimal salePrice, String currencyName, LocalDateTime createdAt) {
+    public SaleModel(int saleId,int invoiceId, String customerName, String productName, BigDecimal quantity, int purchasePrice, BigDecimal salePrice, String currencyName, LocalDateTime createdAt) {
         this.saleId = saleId;
+        this.invoiceId=invoiceId;
         this.customerName = customerName;
         this.productName = productName;
         this.quantity = quantity;
@@ -33,8 +35,9 @@ public class SaleModel {
         this.createdAt = createdAt;
     }
 
-    public SaleModel(int saleId, String customerName, String productName, BigDecimal quantity, int purchasePrice, BigDecimal salePrice, String currencyName, LocalDateTime createdAt, String createdBy, LocalDateTime updateAt, String updateBy, LocalDateTime deletedAt, String deletedBy) {
+    public SaleModel(int saleId,int invoiceId, String customerName, String productName, BigDecimal quantity, int purchasePrice, BigDecimal salePrice, String currencyName, LocalDateTime createdAt, String createdBy, LocalDateTime updateAt, String updateBy, LocalDateTime deletedAt, String deletedBy) {
         this.saleId = saleId;
+        this.invoiceId=invoiceId;
         this.customerName = customerName;
         this.productName = productName;
         this.quantity = quantity;
@@ -55,6 +58,14 @@ public class SaleModel {
 
     public void setSaleId(int saleId) {
         this.saleId = saleId;
+    }
+
+    public int getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public String getCustomerName() {
@@ -96,7 +107,6 @@ public class SaleModel {
     public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
     }
-
     public String getCurrencyName() {
         return currencyName;
     }
@@ -152,6 +162,11 @@ public class SaleModel {
     public void setDeletedBy(String deletedBy) {
         this.deletedBy = deletedBy;
     }
-
-   
+    // getter method for calcuating the totalPrice
+    public BigDecimal getTotalPrice(){
+        if(quantity==null || salePrice==null){
+            return BigDecimal.ZERO;
+        }
+        return quantity.multiply(salePrice);
+    }
 }

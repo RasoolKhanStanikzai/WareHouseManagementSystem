@@ -167,6 +167,10 @@ public class FXMLDocumentController implements Initializable {
     private void loadSaleFXML(){
         loadPage("SaleFXML");
     }
+    @FXML
+    private void loadReportFXML(){
+        loadPage("ReportFXML");
+    }
    private void preloadPage(String name,String fxmlPath){
         try{
         FXMLLoader loader=new FXMLLoader(getClass().getResource(fxmlPath));
@@ -222,6 +226,7 @@ public class FXMLDocumentController implements Initializable {
         preloadPage("PurchaseFXML","/Purchase/PurchaseFXML.fxml");
         preloadPage("InventoryFXML","/Inventory/InventoryFXML.fxml");
         preloadPage("SaleFXML","/Sale/SaleFXML.fxml");
+        preloadPage("ReportFXML","/Report/ReportsFXML.fxml");
         hamburgerAnitmation();
         dashboardCenterCentents=centerContentVBOX.getChildren().get(0);
         loadDashboardStackPanes();

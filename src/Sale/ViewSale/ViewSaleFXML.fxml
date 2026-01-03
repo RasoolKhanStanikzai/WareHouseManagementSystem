@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,6 +20,7 @@
       <TableView fx:id="tblViewSale" layoutX="14.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0" styleClass="table" stylesheets="@../../StyleingCSS/StyleCSS.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
         <columns>
           <TableColumn fx:id="colSaleID" prefWidth="75.0" text="Sale ID" />
+            <TableColumn fx:id="colInvoiceId" prefWidth="75.0" text="Invoice ID" />
           <TableColumn fx:id="colCustomer" prefWidth="75.0" text="Customer Name" />
             <TableColumn fx:id="colProduct" prefWidth="75.0" text="Product Name" />
             <TableColumn fx:id="colQuantity" prefWidth="75.0" text="Quantity" />
@@ -72,5 +74,7 @@
             </Label>
          </children>
       </HBox>
+      <JFXButton fx:id="btnExportToExcel" buttonType="RAISED" layoutX="712.0" layoutY="11.0" styleClass="btn" stylesheets="@../../StyleingCSS/StyleCSS.css" text="Export to Excel" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <JFXButton fx:id="btnPrintSales" buttonType="RAISED" layoutX="567.0" layoutY="13.0" onAction="#printSales" styleClass="btn" stylesheets="@../../StyleingCSS/StyleCSS.css" text="Print" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="10.0" />
    </children>
 </AnchorPane>

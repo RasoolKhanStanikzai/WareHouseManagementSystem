@@ -5,6 +5,7 @@
 package DataModels;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -13,14 +14,14 @@ import java.security.Timestamp;
 public class CategoryModel {
     private int id;
     private String name,descriptions;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private String createdBy;
-    private Timestamp updateAt;
+    private LocalDateTime updateAt;
     private String updateBy;
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
     private String deleteBy;
 
-    public CategoryModel(int id, String name, String descriptions, Timestamp createdAt, String createdBy, Timestamp updateAt, String updateBy, Timestamp deletedAt, String deleteBy) {
+    public CategoryModel(int id, String name, String descriptions, LocalDateTime createdAt, String createdBy, LocalDateTime updateAt, String updateBy, LocalDateTime deletedAt, String deleteBy) {
         this.id = id;
         this.name = name;
         this.descriptions = descriptions;
@@ -36,6 +37,13 @@ public class CategoryModel {
         this.id = id;
         this.name = name;
         this.descriptions = descriptions;
+    }
+
+    public CategoryModel(int id, String name, String descriptions, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.descriptions = descriptions;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -62,11 +70,11 @@ public class CategoryModel {
         this.descriptions = descriptions;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -78,11 +86,11 @@ public class CategoryModel {
         this.createdBy = createdBy;
     }
 
-    public Timestamp getUpdateAt() {
+    public LocalDateTime getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Timestamp updateAt) {
+    public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
 
@@ -94,11 +102,11 @@ public class CategoryModel {
         this.updateBy = updateBy;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 

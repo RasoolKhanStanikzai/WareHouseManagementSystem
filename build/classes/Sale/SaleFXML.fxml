@@ -109,6 +109,5 @@
       </Label>
       <Label fx:id="lblNotification" layoutX="764.0" layoutY="15.0" styleClass="notification" stylesheets="@../StyleingCSS/StyleCSS.css" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <JFXButton fx:id="btnSaleView" buttonType="RAISED" layoutX="450.0" layoutY="63.0" onAction="#loadViewSaleFXML" prefHeight="30.0" prefWidth="160.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="View All Sales" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="60.0" />
-      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="140.0" layoutY="426.0" onAction="#printInvoice" prefHeight="30.0" prefWidth="153.0" styleClass="btn" stylesheets="@../StyleingCSS/StyleCSS.css" text="Print Invoice" />
    </children>
 </AnchorPane>

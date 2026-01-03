@@ -96,8 +96,6 @@ public class SaleFXMLController implements Initializable {
     private JFXButton btnSale;
     @FXML
     private JFXButton btnSaleView;
-    @FXML
-    private JFXButton btnPrint;
 
     private void loadCustomer(){
         String query="select CustomerID,Name from customer Where DeletedAt IS NULL";
@@ -210,7 +208,7 @@ public class SaleFXMLController implements Initializable {
     private void totalOfQuanttyAndSale(){
           IntegerBinding totalItem=ControlHelper.totalSum(cartList, SaleCartModel::getQuantity);
           totalQuantity.bind(totalItem);
-          IntegerBinding totalS=ControlHelper.totalSum(cartList, SaleCartModel::getSalePrice);
+          IntegerBinding totalS=ControlHelper.totalSum(cartList, SaleCartModel::getTotalPrice);
           totalSale.bind(totalS);
           
     }
@@ -344,17 +342,6 @@ public class SaleFXMLController implements Initializable {
         }
         DashboardModel.getInstance().setSalesCount(total);
     }
-    @FXML
-    private void printInvoice() throws Exception{
-             JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(cartList);
-             Map<String,Object> parameters=new HashMap<>();
-             parameters.put("invoiceNumber", System.currentTimeMillis());
-             parameters.put("customerName", comboCustomer.getValue().getCustomerName());
-             parameters.put("ReportDataSource", cartList);
-             
-             JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/CartItemInvoice.jasper"),parameters,dataSource);
-             JasperViewer.viewReport(print,false);
-    }
     private void printCustomerInvoice(int invoiceId)throws Exception{
         JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(cartList);
              Map<String,Object> parameters=new HashMap<>();
@@ -362,7 +349,7 @@ public class SaleFXMLController implements Initializable {
              parameters.put("customerName", comboCustomer.getValue().getCustomerName());
              parameters.put("ReportDataSource", cartList);
              
-             JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/CartItemInvoice.jasper"),parameters,dataSource);
+             JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/JASPERFiles/CartItemInvoice.jasper"),parameters,dataSource);
              JasperViewer.viewReport(print,false);
     }
     @Override
