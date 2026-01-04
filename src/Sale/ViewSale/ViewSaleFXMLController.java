@@ -154,9 +154,10 @@ public class ViewSaleFXMLController implements Initializable {
         List<InvoiceDTO> invoiceItems=new ArrayList<>();
         for(Map<String,Object> row:data){
             invoiceItems.add(new InvoiceDTO(Integer.parseInt(row.get("InvoiceID").toString()),row.get("CustomerName").toString(),row.get("ProductName").toString(),
-            Integer.parseInt(row.get("Quantity").toString()),
+                Integer.parseInt(row.get("Quantity").toString()),
             Integer.parseInt(row.get("PricePerUnit").toString()),
             row.get("CurrencyName").toString()));
+
         }
         JRBeanCollectionDataSource ds=new JRBeanCollectionDataSource(invoiceItems);
         
@@ -167,22 +168,17 @@ public class ViewSaleFXMLController implements Initializable {
         JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/JASPERFiles/CartItemInvoice.jasper"),params,ds);
         JasperViewer.viewReport(print,false);
     }
-//    private void printAllSales()throws Exception{
-//        JRBeanCollectionDataSource ds=new JRBeanCollectionDataSource(tblViewSale.getItems());
-//        Map<String,Object> params=new HashMap<>();
-//        params.put("reportTitle", "All Sales Report");
-//        JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/JASPERFiles/CartItemInvoice.jasper"),params,ds);
-//        JasperViewer.viewReport(print,false);
-//    }
+    private void printAllSales()throws Exception{
+    }
     @FXML
     private void printSales(){
         SaleModel selected=tblViewSale.getSelectionModel().getSelectedItem();
         try{
             if(selected!=null){
                 printInvoiceById(selected.getInvoiceId());
-            } //else{
-//               //printAllSales(); 
-//            }
+            } else{
+             ControlHelper.showAlertMessage("Please select record in the table.", Alert.AlertType.INFORMATION);
+           }
         } catch(Exception ex){
             ex.printStackTrace();
         }

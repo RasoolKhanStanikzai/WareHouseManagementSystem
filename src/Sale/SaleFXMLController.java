@@ -343,12 +343,11 @@ public class SaleFXMLController implements Initializable {
         DashboardModel.getInstance().setSalesCount(total);
     }
     private void printCustomerInvoice(int invoiceId)throws Exception{
-        JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(cartList);
+             JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(cartList);
              Map<String,Object> parameters=new HashMap<>();
              parameters.put("invoiceNumber", invoiceId);
              parameters.put("customerName", comboCustomer.getValue().getCustomerName());
              parameters.put("ReportDataSource", cartList);
-             
              JasperPrint print=JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/JASPERFiles/CartItemInvoice.jasper"),parameters,dataSource);
              JasperViewer.viewReport(print,false);
     }

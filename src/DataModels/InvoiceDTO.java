@@ -13,16 +13,18 @@ public class InvoiceDTO {
     private final String customerName;
     private final String productName;
     private final int quantity;
-    private final int pricePerUnit;
+    private final int salePrice;
     private final String currencyName;
+    private final int totalPrice;
 
-    public InvoiceDTO(int invoiceNumber,String customerName,String productName, int quantity,int pricePerUnit, String currencyName) {
+    public InvoiceDTO(int invoiceNumber,String customerName,String productName, int quantity,int salePrice, String currencyName) {
         this.invoiceNumber=invoiceNumber;
         this.customerName=customerName;
         this.productName = productName;
         this.quantity = quantity;
-        this.pricePerUnit = pricePerUnit;
+        this.salePrice = salePrice;
         this.currencyName = currencyName;
+        this.totalPrice=quantity*salePrice;
     }
 
     public int getInvoiceNumber() {
@@ -41,12 +43,16 @@ public class InvoiceDTO {
         return quantity;
     }
 
-    public int getPricePerUnit() {
-        return pricePerUnit;
+    public int getSalePrice() {
+        return salePrice;
     }
 
     public String getCurrencyName() {
         return currencyName;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
     }
     
 }
